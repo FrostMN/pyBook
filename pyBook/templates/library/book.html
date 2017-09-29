@@ -1,0 +1,30 @@
+
+            <div id="book{{ book.isbn_10 }}" class="book {{ book.testingFilter }}">
+                <div class="book-thumb">
+                    <img class="cover" src="{{ book.image }}">
+                </div>
+                <div class="book-text">
+                    <h2>{{ book.title }}</h2>
+                    <h5>by</h5> <h4>{{ book.author_first_name }} {{ book.author_last_name }}</h4>
+                    <h3>
+                        <!-- -->
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        <!-- -->
+                    </h3>
+                    <hr>
+                    <p>
+                        {{ book.synopsis }}
+                    </p>
+                </div>
+                <div class="book-foot">
+                    <ul>
+                        <li class="nav nav-right"><a class="nav" onclick="editModal( '{{ book.title|replace("'", "\\'")|replace('"', '\\"') }}', '{{ book.author_first_name }}', '{{ book.author_last_name }}', '{{ book.isbn_10 }}', '{{ book.isbn_13 }}', '{{ book.image }}', '{{ book.synopsis }}')" href="javascript:void(0);"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
+                        <li class="nav nav-right"><a class="nav" onclick="lendBook('{{ book.isbn10 }}')" href="javascript:void(0);"><i class="fa fa-address-card" aria-hidden="true"></i></a></li>
+                        <li class="nav nav-right"><a class="nav" onclick="hideBook('{{ book.isbn10 }}')" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>

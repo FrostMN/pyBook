@@ -1,0 +1,44 @@
+
+        <div id="header" class="header">
+            <ul>
+                <li class="left title">
+                    <a href="card.html"><h1>pyBook</h1></a>
+                </li>
+
+
+                <li class="left icon">
+                    <a onclick="cardView()" href="javascript:void(0);"><h2><i class="fa fa-list-alt" aria-hidden="true"></i></h2></a>
+                </li>
+                <li class="left icon">
+                    <a onclick="listView()" href="javascript:void(0);"><h2><i class="fa fa-list" aria-hidden="true"></i></h2></a>
+                </li>
+                <li class="left icon">
+                    <a onclick="iconView()" href="javascript:void(0);"><h2><i class="fa fa-file-image-o" aria-hidden="true"></i></h2></a>
+                </li>
+
+
+                <!--
+
+                <li class="left button">
+                    <button id="searchBTN"  onclick="addFilter();" href="javascript:void(0);"><h2>filter</h2></button>
+                </li>
+
+                -->
+
+                <li class="left">
+                    <select class="select" id="search-type">
+                        <option value="author"><span class="select">Author</span><i class="fa fa-caret-down"></i></option>
+                        <option value="title">Title <i class="fa fa-caret-down"></i></option>
+                        <option value="isbn10">ISBN 10 <i class="fa fa-caret-down"></i></option>
+                        <option value="1sbn13">ISBN 13 <i class="fa fa-caret-down"></i></option>
+                        <option value="all">All <i class="fa fa-caret-down"></i></option>
+                    </select>
+                </li>
+                <li class="left search">
+                    <input id="searchTXT" type="text" onkeydown="addFilter(event)">
+                </li>
+                <li class="right button">
+                    <button href ="#"><h3>asouer <i class="fa fa-caret-down"></i></h3></button>
+                </li>
+            </ul>
+        </div>

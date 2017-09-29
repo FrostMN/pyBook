@@ -1,0 +1,37 @@
+
+            <div id="edit{{ book.isbn10 }}" class="modal">
+                <div class="edit-modal">
+                    <div class="edit-thumb">
+                        <img class="edit-cover" src="{{ book.img }}">
+                    </div>
+                    <div class="edit-modal-text">
+                        <a class="cancel-modal" onclick="closeModal('edit{{ book.isbn10 }}')" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <form id="edit-form{{ book.isbn10 }}" action="{{ url_for('library.save') }}">
+                            <label for="title">Title:</label>
+                                <input name="title" placeholder="Title" type="text" value="{{ book.title }}"><br>
+                            <label for="author_fname">Author:</label>
+                                <input name="author_fname" placeholder="First" type="text" value="{{ book.author_fname }}">
+                                <input name="author_lname" placeholder="Last" type="text" value="{{ book.author_lname }}"><br>
+                            <label for="isbn10">ISBN 10:</label>
+                                <input name="isbn10" placeholder="ISBN 10" type="text" value="{{ book.isbn10 }}"><br>
+                            <label for="isbn13">ISBN 13:</label>
+                                <input name="isbn13" placeholder="ISBN 13" type="text" value="{{ book.isbn13 }}"><br>
+                            <label>Synopsis:</label><br>
+                            <textarea name="synopsis">{{ book.synopsis }}</textarea>
+                            <button type="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="lend{{ book.isbn10 }}" class="modal">
+                <div class="lend-modal">
+                    <div class="lend-thumb">
+                        <img class="lend-cover" src="{{ book.img }}">
+                    </div>
+                    <div class="lend-modal-text">
+                        <a class="cancel-modal" onclick="closeModal('lend{{ book.isbn10 }}')" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        lend modal
+                    </div>
+                </div>
+            </div>

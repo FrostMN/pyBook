@@ -1,0 +1,856 @@
+:root {
+    --site-bg-color: #C8DCF7;       /* var(--site-bg-color) */
+    --main-bg-color: #7FB8FF;       /* var(--main-bg-color) */
+    --main-bg-hover-color: yellow;  /* var(--main-bg-hover-color) */
+    --main-element-color: #6A8EAE;  /* var(--main-element-color) */
+}
+
+
+html {
+    #font-family: 'Ubuntu', sans-serif;
+    font-family: 'Droid Sans', sans-serif;
+}
+
+.main {
+    width: 100%;
+    #height: auto;
+    #background: var(--site-bg-color);
+}
+
+/*****************************************
+ *                                       *
+ *         CSS for header follows        *
+ *                                       *
+ *****************************************/
+
+
+.header {
+    background: var(--main-bg-color);
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 4em;
+    z-index: 20;
+}
+
+
+.header a {
+    text-decoration: none;
+}
+
+
+.header .left {
+    float: left;
+}
+
+
+.header h1 {
+    font-size: 30pt;
+    color: var(--site-bg-color);
+    padding: .2em .5em;
+}
+
+
+.header h2 {
+    font-size: 20pt;
+    color: var(--site-bg-color);
+    padding: 0 .5em;
+}
+
+.header h3 {
+    font-size: 16pt;
+    color: var(--site-bg-color);
+    padding: .6em 1em 1.5em 1em;
+}
+
+
+.header ul {
+
+}
+
+
+.header li {
+    display: inline-block;
+}
+
+
+#header .left {
+    float: left;
+}
+
+
+#header .icon {
+    padding: 1.2em .5em;
+}
+
+
+#header .icon:hover {
+    background-color: var(--main-bg-hover-color);
+}
+
+
+#header button {
+    padding: 1.2em 1em 1.5em 1em;
+    display: block;
+    border: none;
+    cursor: pointer;
+    background-color: var(--main-bg-color);
+}
+
+#header button:hover {
+    background-color: var(--main-bg-hover-color);
+}
+
+
+#header input[type="text"] {
+    font-size: 20pt;
+    background-image: url('../img/search.png');
+    background-repeat: no-repeat;
+    background-size: 20pt;
+    background-position: 10px 10px;
+
+    width: 100%;
+    max-width: 15em;
+    margin: .3em;
+    margin-left: 0;
+    padding: .2em;
+    padding-left: 2em;
+    border: 2px solid var(--main-element-color);
+    border-left: 0;
+    border-radius: 0px 10px 10px 0px;
+}
+
+#header select {
+    font-size: 19pt;
+    width: 5em;
+    margin: .3em;
+    margin-right: 0;
+    padding: .2em;
+    background-color: var(--main-element-color);
+    color: var(--site-bg-color);
+    border: 2px solid var(--main-element-color);
+    border-right: 0;
+    border-radius: 10px 0px 0px 10px;
+}
+
+#header select {
+        /*for firefox*/
+        -moz-appearance: none;
+        /*for chrome*/
+        -webkit-appearance:none;
+      }
+
+/*for IE10*/
+#header select::-ms-expand {
+    display: none;
+}
+
+#header .right {
+    float: right;
+}
+
+#header i {
+    color: var(--site-bg-color);
+}
+
+#header .select:after {
+    font-family: FontAwesome;
+    content: "\f0d7";
+}
+
+/****************************************
+ *                                      *
+ *        CSS for filters follow        *
+ *                                      *
+ ****************************************/
+
+
+#filters {
+    text-align: justify;
+    width: 50em;
+}
+
+
+#filters div {
+    display: inline-block;
+}
+
+#filters ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+#filters li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+
+}
+
+#filters li.right {
+    float: right;
+    margin-right: .25em;
+}
+
+#filters a {
+    color: black;
+}
+
+#filters a:hover {
+    color: grey;
+}
+
+
+#filters:after {
+  content: '';
+  width: 100%; /* Ensures there are at least 2 lines of text, so justification works */
+  display: inline-block;
+}
+
+
+.filters {
+    height: 2em;
+    padding-top: 4.5em;
+    padding-bottom: .5em;
+    margin: auto
+}
+
+
+.filter {
+    border-radius: 25px;
+    padding: .5em;
+}
+
+
+.filter-on {
+    border: 1px solid black;
+}
+
+
+.filter-off {
+    border: 1px solid grey;
+    color: grey;
+}
+
+#container .filtered {
+    display: none;
+}
+
+#container .hidden {
+    display: none;
+}
+
+
+/****************************************
+ *                                      *
+ *       CSS for book card follows      *
+ *                                      *
+ ****************************************/
+
+#cards {
+    #height: 125px;
+    #border: 1px solid var(--main-element-color); /* --main element color: #6A8EAE*/
+    text-align: center;
+    width: 90%;
+    max-width: 1155px;
+    min-width: 600px;
+    margin: auto
+}
+
+
+#cards div {
+    display: inline-block;
+}
+
+
+#cards h2 {
+    font-size: 20pt;
+    text-align: left;
+    margin-bottom: .2em;
+}
+
+
+#cards h3 {
+    font-size: 14pt;
+    text-align: left;
+    margin-bottom: .1em;
+}
+
+
+#cards h4 {
+    font-size: 12pt;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: .3em;
+}
+
+
+#cards h5 {
+    font-size: 10pt;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: .3em;
+}
+
+
+#cards div.book-text {
+    text-align: justify;
+}
+
+
+@media screen and (min-width: 1305px) {
+    #cards {
+        text-align: justify;
+    }
+
+
+    #cards .book-foot {
+        height: 2em;
+        position: relative;
+        top: .15em;
+        left: 11em;
+        padding: auto;
+    }
+}
+
+
+#cards div {
+    display: inline-block;
+}
+
+
+#cards:after {
+  content: '';
+  width: 100%;
+  display: inline-block;
+}
+
+
+#cards .book {
+    background: white;
+    border: 1px solid var(--main-element-color); /* #6A8EAE; */
+    position: relative;
+    min-width: 540px;
+    max-width: 540px;
+    margin-bottom: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+
+#cards .book-thumb {
+    height: 400px;
+    border-right: 1px solid var(--main-element-color);
+    float: left;
+    padding: 0;
+}
+
+
+#cards .cover {
+    #width: 250px;
+    #height: 100%;
+    width: 270px;
+    height: 400px;
+    #border-right: 1px solid var(--main-element-color);
+    margin: 0;
+
+}
+
+
+#cards .book-text {
+    width: 236px;
+    height: 20.35em;
+    overflow: hidden;
+    position: relative;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    text-align: left;
+}
+
+
+#cards .book-foot {
+    height: 2em;
+    position: absolute;
+    top: 22.95em;
+    right: .25em;
+    padding: auto;
+    z-index: 500;
+}
+
+
+#cards .book-foot ul {
+    #list-style-type: none;
+    padding-top: .5em;
+    padding-right: .25em;
+    #padding-right: 1.5em;
+}
+
+
+#cards .book-foot li {
+    float: right;
+    padding-left: .75em;
+    display: inline-block;
+}
+
+
+#cards .book-foot a {
+    color: black;
+}
+
+
+/****************************************
+ *                                      *
+ *       CSS for book lines follows     *
+ *                                      *
+ ****************************************/
+
+#lines {
+    #height: 125px;
+    #border: 1px solid #6A8EAE;
+    text-align: center;
+    width: 90%;
+    max-width: 1155px;
+    min-width: 600px;
+    margin: auto
+}
+
+
+#lines div {
+    #width: 47.5%;
+    display: inline-block;
+}
+
+
+#lines h2 {
+    font-size: 20pt;
+    text-align: left;
+    margin-bottom: .2em;
+}
+
+
+#lines h3 {
+    font-size: 14pt;
+    text-align: left;
+    margin-bottom: .1em;
+}
+
+
+#lines h4 {
+    font-size: 12pt;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: .3em;
+}
+
+
+#lines h5 {
+    font-size: 10pt;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: .3em;
+}
+
+
+#lines div.book-text {
+    text-align: justify;
+}
+
+
+@media screen and (min-width: 1305px) {
+    #lines {
+        text-align: justify;
+    }
+}
+
+
+#lines div {
+    #width: 47.5%;
+    display: inline-block;
+}
+
+
+#lines:after {
+  content: '';
+  width: 100%;
+  display: inline-block;
+}
+
+
+#lines .book {
+    background: white;
+    border: 1px solid #6A8EAE;
+    min-width: 540px;
+    max-width: 100%;
+    margin-bottom: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+
+#lines .book-thumb {
+    display: none;
+    height: 400px;
+    border-right: 1px solid black;
+    float: left;
+    padding: 0;
+}
+
+
+#lines .cover {
+    #width: 250px;
+    #height: 100%;
+    width: 270px;
+    height: 400px;
+    border-right: 1px solid black;
+    margin: 0;
+
+}
+
+
+#lines .book-text {
+    width: 100%;
+    margin-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: left;
+    float: left;
+}
+
+
+#lines .book-foot {
+    float: right;
+    #background-color: red;
+    height: 2em;
+    width: 49.2%;
+    position: relative;
+    bottom: -2.45em;
+    right: 2px;
+    padding: auto;
+}
+
+
+#lines .book-foot ul {
+    #list-style-type: none;
+    padding-right: 1em;
+}
+
+
+#lines .book-foot li {
+    float: right;
+    padding-left: .75em;
+    display: inline-block;
+}
+
+
+#lines .book-foot a {
+    color: black
+}
+
+#lines hr {
+    display: none;
+}
+
+
+/****************************************
+ *                                      *
+ *       CSS for book icons follows     *
+ *                                      *
+ ****************************************/
+
+#icons {
+    #height: 125px;
+    #border: 1px solid #6A8EAE;
+    text-align: center;
+    width: 90%;
+    max-width: 1155px;
+    min-width: 600px;
+    margin: auto
+}
+
+
+#icons div {
+    #width: 47.5%;
+    display: inline-block;
+}
+
+
+#icons h2 {
+    font-size: 20pt;
+    text-align: left;
+    margin-bottom: .2em;
+}
+
+
+#icons h3 {
+    font-size: 14pt;
+    text-align: left;
+    margin-bottom: .1em;
+}
+
+
+#icons h4 {
+    font-size: 12pt;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: .3em;
+}
+
+
+#icons h5 {
+    font-size: 10pt;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: .3em;
+}
+
+
+#icons div.book-text {
+    text-align: justify;
+}
+
+
+@media screen and (min-width: 1305px) {
+    #icons {
+        text-align: justify;
+    }
+}
+
+
+#icons div {
+    #width: 47.5%;
+    display: inline-block;
+}
+
+
+#icons:after {
+  content: '';
+  width: 100%;
+  display: inline-block;
+}
+
+
+#icons .book {
+    background: white;
+    border: 1px solid #6A8EAE;
+    min-width: 270px;
+    max-width: 270px;
+    height: 400px;
+    margin-bottom: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+
+#icons .book-thumb {
+    height: 400px;
+    #border-right: 1px solid black;
+    float: left;
+    padding: 0;
+}
+
+
+#icons .cover {
+    #width: 250px;
+    #height: 100%;
+    width: 270px;
+    height: 400px;
+    #border-right: 1px solid black;
+    margin: 0;
+}
+
+
+#icons .book-text {
+    display: none;
+    width: 43%;
+    margin-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: left;
+    float: right
+}
+
+
+#icons .book-foot {
+    #display: none;
+    opacity: .1;
+    float: right;
+    #background-color: red;
+    height: 3em;
+    width: 5em;
+    position: relative;
+    bottom: 3.5em;
+    #color: white;
+    right: .5em;
+    padding: 1em auto;
+    z-index: 10;
+}
+
+
+#icons .book-foot:hover {
+    opacity: 1;
+    background-color: lightgrey;
+}
+
+
+#icons .book-foot ul {
+    #list-style-type: none;
+    padding-right: 1em;
+}
+
+
+#icons .book-foot li {
+    float: right;
+    padding-left: .75em;
+    display: inline-block;
+}
+
+
+#icons .book-foot a {
+    font-size: 1em;
+    position: relative;
+    top: 1em;
+    right: .1em;
+    #margin-top: 1em;
+    #padding: 1em 2em;
+    color: black;
+}
+
+/****************************************
+ *                                      *
+ *         CSS for modals follow        *
+ *                                      *
+ ****************************************/
+
+#container .modal {
+    display: none;
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    background:rgba(255,255,255,0.5);
+    text-align: center;
+
+    z-index: 1000;
+}
+
+#container .cancel-modal {
+    position: absolute;
+    right: 1em;
+    top: 1em;
+}
+
+/****************************************
+ *                                      *
+ *      CSS for edit modal follow       *
+ *                                      *
+ ****************************************/
+
+#container .edit-modal {
+    position: absolute;
+    top: 3em;
+    left: 3em;
+    right: 3em;
+    height: 20em;
+    width: 45em;
+    display: inline-block;
+    text-align: left;
+    background-color: white;
+    border: 1px solid var(--main-element-color);
+    z-index: 120;
+    margin: 3em auto;
+}
+
+#container .edit-thumb {
+    position: relative;
+    top: 1em;
+    left: 1em;
+    height: 200px;
+    #border-right: 1px solid var(--main-element-color);
+    border: 1px solid var(--main-element-color);
+    float: left;
+    padding: 0;
+}
+
+#container .edit-cover {
+    #width: 250px;
+    #height: 100%;
+    width: 135px;
+    height: 200px;
+    #border-right: 1px solid var(--main-element-color);
+    margin: 0;
+}
+
+#container .edit-modal-text {
+    height: calc(100% - 1em);
+    width: calc(100% - 2em - 140px );
+    float: right;
+    margin-left: 2em;
+    #border-left: 1px solid var(--main-element-color);
+    padding-top: 1em;
+    padding-left: 0;
+}
+
+#container .cancel-modal {
+    color: black;
+}
+
+#container .edit-textarea {
+    resize: none;
+}
+
+/****************************************
+ *                                      *
+ *      CSS for lend modal follow       *
+ *                                      *
+ ****************************************/
+
+#container .lend-modal {
+    height: 20em;
+    width: 45em;
+    display: inline-block;
+    text-align: left;
+    background-color: white;
+    border: 1px solid var(--main-element-color);
+    z-index: 120;
+    margin: 3em auto;
+}
+
+#container .lend-thumb {
+    position: relative;
+    top: 1em;
+    left: 1em;
+    height: 200px;
+    border-right: 1px solid var(--main-element-color);
+    float: left;
+    padding: 0;
+}
+
+#container .lend-cover {
+    #width: 250px;
+    #height: 100%;
+    width: 135px;
+    height: 200px;
+    #border-right: 1px solid var(--main-element-color);
+    margin: 0;
+}
+
+#container .lend-modal-text {
+    height: calc(100% - 1em);
+    width: calc(100% - 2em - 140px );
+    float: right;
+    margin-left: 2em;
+    #border-left: 1px solid var(--main-element-color);
+    padding-top: 1em;
+    padding-left: 0;
+}
+

@@ -1,0 +1,11 @@
+
+            <div id="filter-{{ filter.type }}-{{ filter.value }}" class="filter filter-on">
+                <ul>
+                    <li class="left">
+                        {{ filter.type }}: {{ filter.value }}
+                    </li>
+                    <li class="right">
+                        <a onclick="deleteFilter(this.parentNode)" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+            </div>
