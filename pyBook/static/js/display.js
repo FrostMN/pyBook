@@ -29,15 +29,11 @@ function lendBook(obj) {
     modal.style.display = "block";
 }
 
-/*
-
 function hideBook(obj) {
     var hideID = 'hide' + obj;
     var modal = document.getElementById(hideID);
     modal.style.display = "block";
 }
-
-*/
 
 function closeModal(obj) {
     var closeID = obj;

@@ -1,5 +1,3 @@
 flask
 bcrypt
 sqlalchemy
-requests
-werkzeug

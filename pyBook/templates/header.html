@@ -1,11 +1,10 @@
-    <div class="header">
-        <ul id="header" class="header">
+
+        <div id="header" class="header">
             <ul>
                 <li class="left title">
-                    <a href="{{ url_for("library.index") }}"><h1>pyBook</h1></a>
+                    <a href="card.html"><h1>pyBook</h1></a>
                 </li>
 
-                {% if request.path  == "/" %}
 
                 <li class="left icon">
                     <a onclick="cardView()" href="javascript:void(0);"><h2><i class="fa fa-list-alt" aria-hidden="true"></i></h2></a>
@@ -17,57 +16,29 @@
                     <a onclick="iconView()" href="javascript:void(0);"><h2><i class="fa fa-file-image-o" aria-hidden="true"></i></h2></a>
                 </li>
 
+
+                <!--
+
+                <li class="left button">
+                    <button id="searchBTN"  onclick="addFilter();" href="javascript:void(0);"><h2>filter</h2></button>
+                </li>
+
+                -->
+
                 <li class="left">
                     <select class="select" id="search-type">
                         <option value="author"><span class="select">Author</span><i class="fa fa-caret-down"></i></option>
-                        <option value="title">Title<i class="fa fa-caret-down"></i></option>
-                        <option value="isbn10">ISBN 10<i class="fa fa-caret-down"></i></option>
-                        <option value="1sbn13">ISBN 13<i class="fa fa-caret-down"></i></option>
-                        <option value="all">All<i class="fa fa-caret-down"></i></option>
+                        <option value="title">Title <i class="fa fa-caret-down"></i></option>
+                        <option value="isbn10">ISBN 10 <i class="fa fa-caret-down"></i></option>
+                        <option value="1sbn13">ISBN 13 <i class="fa fa-caret-down"></i></option>
+                        <option value="all">All <i class="fa fa-caret-down"></i></option>
                     </select>
                 </li>
                 <li class="left search">
                     <input id="searchTXT" type="text" onkeydown="addFilter(event)">
                 </li>
-
-                </ul>
-
-                {% endif %}
-
-
-
-                {% if not session.logged_in %}
-                <div class="dropdown" style="float:right;">
-                    <button class="dropbtn" onclick="logInModal()" href="javascript:void(0);"><h3><i class="fa fa-user-o" aria-hidden="true"></i> login</h3></button>
-                </div>
-                    <!--
-                    <li class="right button">
-                        <button onclick="logInModal()" href="javascript:void(0);"><h3><i class="fa fa-user-o" aria-hidden="true"></i> login</h3></button>
-                    </li>
-                     -->
-                     <!-- href="{{ url_for('library.log_in') }}" -->
-            <!--    </ul>   -->
-                {% else %}
-            <!--    </ul>   -->
-                <div class="dropdown" style="float:right;">
-                    <button class="dropbtn"><h3>{{ session.user }} <i class="fa fa-caret-down" aria-hidden="true"></i></h3></button>
-                    <div class="dropdown-content">
-                    {% if request.path  != "/" %}
-                        <a href="{{ url_for("library.index") }}">Home</a>
-                    {% endif %}
-                        <a href="{{ url_for("user.index") }}">User</a>
-                    {% if session.admin %}
-                        <a href="{{ url_for("admin.index") }}">Admin</a>
-                    {% endif %}
-                        <a href="{{ url_for("library.log_out") }}">Logout</a>
-                    </div>
-                </div>
-                {% endif %}
-                {% if session.admin %}
-                <li class="right icon">
-                    <a onclick="addBookModal()" href="javascript:void(0);"><h2><i class="fa fa-plus" aria-hidden="true"></i></h2></a>
+                <li class="right button">
+                    <button href ="#"><h3>asouer <i class="fa fa-caret-down"></i></h3></button>
                 </li>
-                {% endif %}
-
             </ul>
         </div>

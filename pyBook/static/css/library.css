@@ -1,10 +1,8 @@
 :root {
-    --site-bg-color: #C8DCF7;           /* var(--site-bg-color)         */
-    --main-bg-color: #7FB8FF;           /* var(--main-bg-color)         */
-    --main-bg-hover-color: yellow;      /* var(--main-bg-hover-color)   */
-    --main-element-color: #6A8EAE;      /* var(--main-element-color)    */
-    --shadow-color: rgba(0,0,0,0.2);    /* var(--shadow-color)          */
-    --controls: black;                  /* var(--controls)              */
+    --site-bg-color: #C8DCF7;       /* var(--site-bg-color) */
+    --main-bg-color: #7FB8FF;       /* var(--main-bg-color) */
+    --main-bg-hover-color: yellow;  /* var(--main-bg-hover-color) */
+    --main-element-color: #6A8EAE;  /* var(--main-element-color) */
 }
 
 
@@ -31,6 +29,7 @@ html {
     position: fixed;
     left: 0;
     top: 0;
+    overflow: hidden;
     width: 100%;
     height: 4em;
     z-index: 20;
@@ -63,7 +62,7 @@ html {
 .header h3 {
     font-size: 16pt;
     color: var(--site-bg-color);
-    padding: .1em .1em .15em .1em;
+    padding: .6em 1em 1.5em 1em;
 }
 
 
@@ -87,14 +86,8 @@ html {
 }
 
 
-#header .icon:hover i {
-    background-color: var(--site-bg-color);
-    color: var(--main-bg-color);
-}
-
 #header .icon:hover {
-    background-color: var(--site-bg-color);
-    color: var(--main-bg-color);
+    background-color: var(--main-bg-hover-color);
 }
 
 
@@ -106,15 +99,10 @@ html {
     background-color: var(--main-bg-color);
 }
 
-#header button:hover h3 {
-    background-color: var(--site-bg-color);
-    color: var(--main-bg-color);
+#header button:hover {
+    background-color: var(--main-bg-hover-color);
 }
 
-#header button:hover {
-    background-color: var(--site-bg-color);
-    color: var(--main-bg-color);
-}
 
 #header input[type="text"] {
     font-size: 20pt;
@@ -147,12 +135,6 @@ html {
     border-radius: 10px 0px 0px 10px;
 }
 
-#header select:hover {
-    background-color: var(--main-bg-hover-color);
-    cursor: pointer;
-}
-
-
 #header select {
         /*for firefox*/
         -moz-appearance: none;
@@ -176,55 +158,6 @@ html {
 #header .select:after {
     font-family: FontAwesome;
     content: "\f0d7";
-}
-
-#header .dropbtn {
-    background-color: var(--main-bg-color);
-    color: var(--site-bg-color);
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: var(--main-bg-color);/*#f9f9f9;*/
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px var(--shadow-color);
-    z-index: 99999;
-}
-
-.dropdown-content a {
-    color: var(--site-bg-color) ;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-#header .dropdown-content a:hover {
-    background-color: var(--site-bg-color);
-    color: var(--main-bg-color);
-}
-
-#header i:hover {
-    background-color: var(--site-bg-color);
-    color: var(--main-bg-color);
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
 }
 
 /****************************************
@@ -446,7 +379,7 @@ html {
     top: 22.95em;
     right: .25em;
     padding: auto;
-    z-index: 5;
+    z-index: 500;
 }
 
 
@@ -466,7 +399,7 @@ html {
 
 
 #cards .book-foot a {
-    color: var(--controls);
+    color: black;
 }
 
 
@@ -615,7 +548,7 @@ html {
 
 
 #lines .book-foot a {
-    color: var(--controls)
+    color: black
 }
 
 #lines hr {
@@ -702,8 +635,8 @@ html {
 
 
 #icons .book {
-/*    background: white; */
-    border: 1px solid var(--main-element-color);
+    background: white;
+    border: 1px solid #6A8EAE;
     min-width: 270px;
     max-width: 270px;
     height: 400px;
@@ -784,7 +717,7 @@ html {
     right: .1em;
     #margin-top: 1em;
     #padding: 1em 2em;
-    color: var(--controls);
+    color: black;
 }
 
 /****************************************
@@ -868,69 +801,10 @@ html {
 }
 
 #container .cancel-modal {
-    color: var(--controls);
+    color: black;
 }
 
 #container .edit-textarea {
-    resize: none;
-}
-
-/****************************************
- *                                      *
- *   CSS for newBook modal follow       *
- *                                      *
- ****************************************/
-
-#container .new-book-modal {
-    position: absolute;
-    top: 3em;
-    left: 3em;
-    right: 3em;
-    height: 20em;
-    width: 45em;
-    display: inline-block;
-    text-align: left;
-    background-color: white;
-    border: 1px solid var(--main-element-color);
-    z-index: 120;
-    margin: 3em auto;
-}
-
-#container .new-book-thumb {
-    position: relative;
-    top: 1em;
-    left: 1em;
-    height: 200px;
-    #border-right: 1px solid var(--main-element-color);
-    border: 1px solid var(--main-element-color);
-    float: left;
-    padding: 0;
-}
-
-#container .new-book-cover {
-    #width: 250px;
-    #height: 100%;
-    width: 135px;
-    height: 200px;
-    #border-right: 1px solid var(--main-element-color);
-    margin: 0;
-}
-
-#container .new-book-modal-text {
-    height: calc(100% - 1em);
-    width: calc(100% - 2em - 140px );
-    float: right;
-    margin-left: 2em;
-    #border-left: 1px solid var(--main-element-color);
-    padding-top: 1em;
-    padding-left: 0;
-}
-
-#container .cancel-modal {
-    color: var(--controls);
-}
-
-#container .new-book-textarea {
     resize: none;
 }
 
@@ -980,59 +854,3 @@ html {
     padding-left: 0;
 }
 
-/****************************************
- *                                      *
- *     CSS for login modal follows      *
- *                                      *
- ****************************************/
-
-#container .login-modal {
-    #height: 20em;
-    #width: 45em;
-    position: fixed;
-    right: 0;
-    top: -1em;
-    font-size: 20pt;
-    padding: .5em;
-    display: inline-block;
-    text-align: left;
-    background-color: white;
-    border: 1px solid var(--main-element-color);
-    z-index: 120;
-    margin: 3em auto;
-}
-
-#container .login-modal input[type="text"] {
-    width: 25em;
-    float: right;
-}
-#container .login-modal input[type="password"] {
-    width: 25em;
-    float: right;
-}
-
-#login button {
-    float: right;
-}
-
-/****************************************
- *                                      *
- *    CSS for add-book modal follows    *
- *                                      *
- ****************************************/
-
-#container .add-book-modal {
-    #height: 20em;
-    #width: 45em;
-    position: fixed;
-    right: 0;
-    top: -1em;
-    font-size: 20pt;
-    padding: .5em;
-    display: inline-block;
-    text-align: left;
-    background-color: white;
-    border: 1px solid var(--main-element-color);
-    z-index: 120;
-    margin: 3em auto;
-}
