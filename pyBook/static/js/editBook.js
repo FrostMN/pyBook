@@ -1,10 +1,6 @@
 
 
-function editModal(title, fname, lname, isbn10, isbn13, book_img, synopsis) {
-    alert("ineditmodal");
-
-    //alert(book);
-
+function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis) {
 
     var modal = document.createElement("div");
     modal.setAttribute("id", "edit" + isbn_10);
@@ -26,7 +22,7 @@ function editModal(title, fname, lname, isbn10, isbn13, book_img, synopsis) {
     // create cancel link
     var cancel_modal = document.createElement("a");
     cancel_modal.setAttribute("class", "cancel-modal");
-    cancel_modal.setAttribute("onclick", "closeModal('edit" + isbn10 + "')");
+    cancel_modal.setAttribute("onclick", "closeModal('edit" + isbn_10 + "')");
     cancel_modal.setAttribute("href", "javascript:void(0);");
 
     // create cancel icon
@@ -38,7 +34,7 @@ function editModal(title, fname, lname, isbn10, isbn13, book_img, synopsis) {
 
     // create edit form
     var edit_form = document.createElement("form");
-    edit_form.setAttribute("id", "edit-form" + isbn10 );
+    edit_form.setAttribute("id", "edit-form" + isbn_10 );
     edit_form.setAttribute("action", "/save");
     edit_form.setAttribute("method", "post");
 
@@ -76,36 +72,36 @@ function editModal(title, fname, lname, isbn10, isbn13, book_img, synopsis) {
     lname_text_box.setAttribute("value", lname);
     //lname_text_box.innerHTML = "Title: ";
 
-    // create isbn10 label
-    var isbn10_label = document.createElement("label");
-    isbn10_label.setAttribute("for", "isbn10");
-    isbn10_label.innerHTML = "ISBN 10: ";
+    // create isbn_10 label
+    var isbn_10_label = document.createElement("label");
+    isbn_10_label.setAttribute("for", "isbn_10");
+    isbn_10_label.innerHTML = "ISBN 10: ";
 
-    // create isbn10 text box
-    var isbn10_text_box = document.createElement("input");
-    isbn10_text_box.setAttribute("type", "text");
-    isbn10_text_box.setAttribute("name", "isbn10");
-    isbn10_text_box.setAttribute("placeholder", "ISBN 10");
-    isbn10_text_box.setAttribute("value", isbn10);
+    // create isbn_10 text box
+    var isbn_10_text_box = document.createElement("input");
+    isbn_10_text_box.setAttribute("type", "text");
+    isbn_10_text_box.setAttribute("name", "isbn_10");
+    isbn_10_text_box.setAttribute("placeholder", "ISBN 10");
+    isbn_10_text_box.setAttribute("value", isbn_10);
 
-    // create isbn13 label
-    var isbn13_label = document.createElement("label");
-    isbn13_label.setAttribute("for", "isbn13");
-    isbn13_label.innerHTML = "ISBN 10: ";
+    // create isbn_13 label
+    var isbn_13_label = document.createElement("label");
+    isbn_13_label.setAttribute("for", "isbn_13");
+    isbn_13_label.innerHTML = "ISBN 10: ";
 
-    // create isbn13 text box
-    var isbn13_text_box = document.createElement("input");
-    isbn13_text_box.setAttribute("type", "text");
-    isbn13_text_box.setAttribute("name", "isbn13");
-    isbn13_text_box.setAttribute("placeholder", "ISBN 13");
-    isbn13_text_box.setAttribute("value", isbn13);
+    // create isbn_13 text box
+    var isbn_13_text_box = document.createElement("input");
+    isbn_13_text_box.setAttribute("type", "text");
+    isbn_13_text_box.setAttribute("name", "isbn_13");
+    isbn_13_text_box.setAttribute("placeholder", "ISBN 13");
+    isbn_13_text_box.setAttribute("value", isbn_13);
 
     // create submit button
     var edit_button = document.createElement("button");
     edit_button.setAttribute("type", "submit");
     edit_button.innerHTML = "Save";
 
-    // create isbn13 label
+    // create isbn_13 label
     var synopsis_label = document.createElement("label");
     synopsis_label.setAttribute("for", "synopsis");
     synopsis_label.innerHTML = "Synopsis: ";
@@ -129,13 +125,13 @@ function editModal(title, fname, lname, isbn10, isbn13, book_img, synopsis) {
 
     edit_form.appendChild(document.createElement('br'));
 
-    edit_form.appendChild(isbn10_label);
-    edit_form.appendChild(isbn10_text_box);
+    edit_form.appendChild(isbn_10_label);
+    edit_form.appendChild(isbn_10_text_box);
 
     edit_form.appendChild(document.createElement('br'));
 
-    edit_form.appendChild(isbn13_label);
-    edit_form.appendChild(isbn13_text_box);
+    edit_form.appendChild(isbn_13_label);
+    edit_form.appendChild(isbn_13_text_box);
 
     edit_form.appendChild(document.createElement('br'));
 
@@ -180,7 +176,7 @@ function editModal(title, fname, lname, isbn10, isbn13, book_img, synopsis) {
 
     document.getElementById("container").appendChild(modal);
 
-    var editID = 'edit' + isbn10;
+    var editID = 'edit' + isbn_10;
 
     //alert("editID: " + editID);
     document.getElementById(editID).style.display = "block";
