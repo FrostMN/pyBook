@@ -1,7 +1,13 @@
+
+
 function editModal(title, fname, lname, isbn10, isbn13, book_img, synopsis) {
+    alert("ineditmodal");
+
+    //alert(book);
+
 
     var modal = document.createElement("div");
-    modal.setAttribute("id", "edit" + isbn10);
+    modal.setAttribute("id", "edit" + isbn_10);
     modal.setAttribute("class", "modal");
 
     var edit_modal = document.createElement("div");
