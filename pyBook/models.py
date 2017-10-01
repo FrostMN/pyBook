@@ -15,15 +15,15 @@ class User(Base):
     hash = Column(String(64))
 
     def __init__(self, user_name=None, email=None, admin=0, first_name=None, last_name=None,
-                 salt=generate_salt(), hash=generate_salt(), uid=None):
-        self._user_id = uid
-        self._email = email
-        self._user_name = user_name
-        self._admin = admin
-        self._first_name = first_name
-        self._last_name = last_name
-        self._salt = salt
-        self._hash = hash
+                 salt=None, pw_hash=None, user_id=None):
+        self.user_id = user_id
+        self.email = email
+        self.user_name = user_name
+        self.admin = admin
+        self.first_name = first_name
+        self.last_name = last_name
+        self.salt = salt
+        self.hash = pw_hash
 
     def __repr__(self):
         return '<User %r>' % self._user_name
@@ -64,8 +64,9 @@ class Book(Base):
     __tablename__ = 'books'
     book_id = Column(Integer, primary_key=True)
     book_title = Column(String(200), unique=False)
-    isbn_ten = Column(Integer, unique=True)
-    isbn_thirteen = Column(Integer, unique=True)
+    book_sort = Column(String(200), unique=False)
+    isbn_ten = Column(String(10), unique=False)
+    isbn_thirteen = Column(String(13), unique=False)
     author_first_name = Column(String(50))
     author_last_name = Column(String(50))
     status = Column(SmallInteger)
