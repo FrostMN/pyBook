@@ -23,8 +23,7 @@
                 <div class="book-foot">
                     <ul>
 
-                        <li class="nav nav-right"><a class="nav" onclick="editModal( '{{ book.title }}', '{{ book.author_first_name }}', '{{ book.author_last_name }}', '{{ book.isbn_10 }}', '{{ book.isbn_13 }}', '{{ book.image }}', '{{ book.synopsis }}')" href="javascript:void(0);"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
-                        -->
+                        <li class="nav nav-right"><a class="nav" onclick="editModal( '{{ book.title|replace("'", "\\'")|replace('"', '\\"') }}', '{{ book.author_first_name }}', '{{ book.author_last_name }}', '{{ book.isbn_10 }}', '{{ book.isbn_13 }}', '{{ book.image }}', '{{ book.synopsis }}', '{{ book.id }}')" href="javascript:void(0);"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
                         <!--
                         <li class="nav nav-right"><a class="nav" onclick="editModal( '{{ book.json()|replace("'", "\\'")|replace('"', '\\"') }}' )" href="javascript:void(0);"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
                         -->
