@@ -1,6 +1,6 @@
 
 
-function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis) {
+function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, book_id) {
 
     var modal = document.createElement("div");
     modal.setAttribute("id", "edit" + isbn_10);
@@ -37,6 +37,12 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis) {
     edit_form.setAttribute("id", "edit-form" + isbn_10 );
     edit_form.setAttribute("action", "/save");
     edit_form.setAttribute("method", "post");
+
+    // create book_id hidden input
+    var book_id_input = document.createElement("input");
+    book_id_input.setAttribute("type", "hidden");
+    book_id_input.setAttribute("name", "book_id");
+    book_id_input.setAttribute("value", book_id);
 
     // create title label
     var title_label = document.createElement("label");
@@ -114,6 +120,8 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis) {
 
 
     // build edit-form from components
+    edit_form.appendChild(book_id_input);
+
     edit_form.appendChild(title_label);
     edit_form.appendChild(title_text_box);
 
