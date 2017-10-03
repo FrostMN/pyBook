@@ -132,8 +132,12 @@ class Book(Base):
     def isbn_13(self):
         return str(self.isbn_thirteen).zfill(13)
 
+    @property
+    def id(self):
+        return str(self.book_id)
 
-    # @property
+
+            # @property
     # def id(self):
     #     return self._book_id
     #
