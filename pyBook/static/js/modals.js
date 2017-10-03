@@ -184,6 +184,63 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis) {
     document.getElementById("container").style.overflow = "hidden";
 }
 
+function logInModal() {
+
+    var modal = document.createElement("div");
+    modal.setAttribute("id", "login");
+    modal.setAttribute("class", "modal");
+
+
+    var login_modal = document.createElement("div");
+    login_modal.setAttribute("class", "login-modal");
+
+
+    var login_form = document.createElement("form");
+    login_form.setAttribute("action", "/log_in");
+    login_form.setAttribute("method", "POST");
+
+
+    var uname_label = document.createElement("label");
+    uname_label.setAttribute("for", "uname");
+    uname_label.innerHTML = "User Name: ";
+
+    var uname_input = document.createElement("input");
+    uname_input.setAttribute("name", "uname");
+    uname_input.setAttribute("type", "text");
+
+    var pword_label = document.createElement("label");
+    pword_label.setAttribute("for", "pword");
+    pword_label.innerHTML = " Password: ";
+
+    var pword_input = document.createElement("input");
+    pword_input.setAttribute("name", "pword");
+    pword_input.setAttribute("type", "password");
+
+    var login_submit = document.createElement("button");
+    login_submit.setAttribute("type", "submit");
+    login_submit.innerHTML = "login";
+
+    login_form.appendChild(uname_label);
+    login_form.appendChild(uname_input);
+    login_form.appendChild(document.createElement('br'));
+    login_form.appendChild(pword_label);
+    login_form.appendChild(pword_input);
+    login_form.appendChild(document.createElement('br'));
+    login_form.appendChild(login_submit);
+
+    login_modal.appendChild(login_form);
+
+    modal.appendChild(login_modal);
+
+
+
+    document.getElementById("container").appendChild(modal);
+
+    document.getElementById("login").style.display = "block";
+    document.getElementById("container").style.height = "calc(100vh - 7em)";
+    document.getElementById("container").style.overflow = "hidden";
+}
+
 function lendModal(book) {
     console.log(book);
 }

@@ -11,24 +11,47 @@ class User(Base):
     admin = Column(SmallInteger)
     first_name = Column(String(50))
     last_name = Column(String(50))
-    salt = Column(String(64))
-    hash = Column(String(64))
+    pw_salt = Column(String(64))
+    pw_hash = Column(String(64))
 
     def __init__(self, user_name=None, email=None, admin=0, first_name=None, last_name=None,
-                 salt=None, pw_hash=None, user_id=None):
+                 pw_salt=None, pw_hash=None, user_id=None):
         self.user_id = user_id
         self.email = email
         self.user_name = user_name
         self.admin = admin
         self.first_name = first_name
         self.last_name = last_name
-        self.salt = salt
-        self.hash = pw_hash
+        self.pw_salt = pw_salt
+        self.pw_hash = pw_hash
+
+    def json(self):
+        return dict(id=self.user_id, email=self.email, uname=self.user_name, name=self.first_name + " " + self.last_name,
+                    salt=self.pw_salt, hash=self.pw_hash)
 
     def __repr__(self):
-        return '<User %r>' % self._user_name
+        return '<User %r>' % self.user_name
 
-    # @property
+    @property
+    def user(self):
+        return self.user_name
+
+    @property
+    def is_admin(self):
+        if self.admin == 1:
+            return True
+        else:
+            return False
+
+    @property
+    def salt(self):
+        return self.pw_salt
+
+    @property
+    def hash(self):
+        return self.pw_hash
+
+            # @property
     # def admin(self):
     #     if self._admin == 1:
     #         return True
