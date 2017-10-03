@@ -247,8 +247,14 @@ function logInModal() {
     document.getElementById("login").style.display = "block";
     document.getElementById("container").style.height = "calc(100vh - 7em)";
     document.getElementById("container").style.overflow = "hidden";
+    uname_input.focus();
+
 }
 
 function lendModal(book) {
     console.log(book);
+}
+
+function addBook() {
+    alert("in addBook()")
 }

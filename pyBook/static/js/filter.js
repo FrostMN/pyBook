@@ -6,7 +6,7 @@ function addFilter(event) {
         var type = typeSelector.options[typeSelector.selectedIndex].value;
         var typeText = typeSelector.options[typeSelector.selectedIndex].innerHTML;
         //alert("in addFilter()");
-        alert(typeText + ": " + type);
+        //alert(typeText + ": " + type);
 
         var filter = document.createElement('div');
         var searchParam = document.getElementById('searchTXT').value;
@@ -17,7 +17,7 @@ function addFilter(event) {
         var close = document.createElement('li');
         var closeLink = document.createElement('a');
         var closeIcon = document.createElement('i');
-        name.setAttribute("class", "left")
+        name.setAttribute("class", "left");
         name.innerHTML = typeText + ": " + searchParam;
         close.setAttribute("class", "right");
         closeLink.setAttribute("onclick", "deleteFilter(this.parentNode)");
@@ -47,26 +47,6 @@ function deleteFilter(obj) {
     var elem = document.getElementById(obj.parentNode.parentNode.id);
     //window.alert("before remove");
     elem.parentNode.removeChild(elem);
-
-    //window.alert("after remove");
-    /*
-    var filters = document.getElementById('filters').childNodes;
-
-    for (i = 0; i < filters.length; i++ ) {
-        window.alert(filters[i]);
-    }
-
-    var shelf = document.getElementById('container').childNodes;
-
-    alert("shelf: " + shelf);
-
-    var books = shelf[0].childNodes;
-
-    for (i = 0; i < books.length; i++ ) {
-        window.alert("in books: " + books[i]);
-    }
-
-    */
     unfilter()
 }
 
@@ -167,3 +147,77 @@ function filterByTitle( filterParam , book) {
     }
 }
 
+
+function hideBook(bookID) {
+    var book = document.getElementById(bookID);
+    book.classList.add("hidden");
+    addHideFilter();
+}
+
+function unhide() {
+    var shelf = document.getElementById('container').childNodes;
+    var books = shelf[1].childNodes;
+
+        for (var i = 0; i < books.length; i++ ) {
+        //window.alert("books[" + i + "]: " + books[i].className);
+        if (books[i].tagName == "DIV") {
+            //alert("its a div");
+            if (books[i].classList.contains("hidden")) {
+                books[i].classList.remove("hidden");
+               // alert("filtered")
+            }
+        }
+    }
+
+    var hiddenFilter = document.getElementById("hide-books");
+    var filterCon = document.getElementById("filters");
+
+    filterCon.removeChild(hiddenFilter);
+
+}
+
+function addHideFilter() {
+    var noneHidden = true;
+
+    var filter_container = document.getElementById("filters");
+    var filter_count = filter_container.childElementCount;
+
+    if (filter_count > 0) {
+        var filt = filter_container.childNodes;
+
+        for (var i = 0; i < filt.length; i++) {
+            if (filt[i].tagName == "DIV") {
+                if (filt[i].getAttribute("id") == "hide-books") {
+                    noneHidden = false;
+                }
+            }
+        }
+
+    }
+
+    if (noneHidden) {
+        var hide = document.createElement('div');
+        hide.setAttribute("id", "hide-books");
+        hide.setAttribute("class", "filter filter-on");
+        var list = document.createElement('ul');
+        var name = document.createElement('li');
+        var close = document.createElement('li');
+        var closeLink = document.createElement('a');
+        var closeIcon = document.createElement('i');
+        name.setAttribute("class", "left");
+        name.innerHTML = "Hidden ";
+        close.setAttribute("class", "right");
+        closeLink.setAttribute("onclick", "unhide()");
+        closeLink.setAttribute("href", "javascript:void(0)");
+        closeIcon.setAttribute("class", "fa fa-times");
+        closeIcon.setAttribute("aria-hidden", "true");
+        closeLink.appendChild(closeIcon);
+        document.getElementById('filters').appendChild(hide);
+        close.appendChild(closeLink);
+        list.appendChild(name);
+        list.appendChild(close);
+        hide.appendChild(list);
+        var filters = document.getElementById('filters');
+        filters.appendChild(hide);
+    }
+}
