@@ -854,3 +854,19 @@ html {
     padding-left: 0;
 }
 
+/****************************************
+ *                                      *
+ *      CSS for edit modal follow       *
+ *                                      *
+ ****************************************/
+
+#container .login-modal {
+    height: 20em;
+    width: 45em;
+    display: inline-block;
+    text-align: left;
+    background-color: white;
+    border: 1px solid var(--main-element-color);
+    z-index: 120;
+    margin: 3em auto;
+}

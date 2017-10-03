@@ -8,4 +8,6 @@ SECRET_KEY = 'testkey'
 DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'pyBook.db')
 DATABASE_CONNECT_OPTIONS = {}
 
+API_KEY = ''
+
 del os

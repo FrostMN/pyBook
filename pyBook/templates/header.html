@@ -37,8 +37,14 @@
                 <li class="left search">
                     <input id="searchTXT" type="text" onkeydown="addFilter(event)">
                 </li>
-                <li class="right button">
-                    <button href ="#"><h3>asouer <i class="fa fa-caret-down"></i></h3></button>
-                </li>
+                {% if not session.logged_in %}
+                    <li class="right button">
+                        <a onclick="logInModal()" href="javascript:void(0);"><h3>login</h3></a>
+                    </li> <!-- href="{{ url_for('library.log_in') }}" -->
+                {% else %}
+                    <li class="right button">
+                        <button href ="#"><h3>asouer <i class="fa fa-caret-down"></i></h3></button>
+                    </li>
+                {% endif %}
             </ul>
         </div>
