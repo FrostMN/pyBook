@@ -33,8 +33,13 @@ def index():
     if len(users) == 0:
         salt = '4135adc2956ffc180323adc96ed37625c30911f7c8bc18e6c5e2bccceaef55e7'
         asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer', salt, secrets.hash_password(salt, 'asouer'))
-        asouer.json()
-        db_session.add(asouer)
+        guest = User('guest', 'guest@gmail.com', 0, 'Guest', 'User', salt, secrets.hash_password(salt, 'guest'))
+
+
+        test_users = [asouer, guest]
+
+
+        db_session.add_all(test_users)
         db_session.commit()
         return redirect(url_for('library.setup'))
 
@@ -70,7 +75,10 @@ def log_in():
 
 @mod.route('/log_out', methods=['GET', 'POST'])
 def log_out():
-    session.pop('logged_in', None)
+    if session.get('logged_in'):
+        if session['logged_in']:
+            session.clear()
+            return redirect(url_for('library.index'))
     return redirect(url_for('library.index'))
 
 

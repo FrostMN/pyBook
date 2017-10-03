@@ -27,8 +27,8 @@
                         <!--
                         <li class="nav nav-right"><a class="nav" onclick="editModal( '{{ book.json()|replace("'", "\\'")|replace('"', '\\"') }}' )" href="javascript:void(0);"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
                         -->
-                        <li class="nav nav-right"><a class="nav" onclick="lendBook('{{ book.isbn10 }}')" href="javascript:void(0);"><i class="fa fa-address-card" aria-hidden="true"></i></a></li>
-                        <li class="nav nav-right"><a class="nav" onclick="hideBook('{{ book.isbn10 }}')" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+                        <li class="nav nav-right"><a class="nav" onclick="lendBook('{{ book.isbn_10 }}')" href="javascript:void(0);"><i class="fa fa-address-card" aria-hidden="true"></i></a></li>
+                        <li class="nav nav-right"><a class="nav" onclick="hideBook('book{{ book.isbn_10 }}')" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
             </div>
