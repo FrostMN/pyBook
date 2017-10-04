@@ -105,3 +105,5 @@ pyBook.db
 pyBook/__pycache__/
 pyBook/utils/__pycache__/
 pyBook/views/__pycache__/
+
+/config.py

@@ -7,6 +7,7 @@ apiUrl = app.config['ISBNDB_URL'].replace("{{KEY}}", key)
 
 print(apiUrl)
 
+
 def getBook(isbn):
     r = requests.get(apiUrl + isbn).text
     print(r)
