@@ -12,14 +12,6 @@ init_db()
 lorem = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in enim nibh. Mauris gravida dolor quis venenatis eleifend. Vivamus accumsan neque et aliquam placerat. Nulla et orci eget lorem consectetur dictum at non leo. Aliquam venenatis neque tincidunt sapien interdum pulvinar. Lorem ipsum dolor sit amet, consectetur adipiscing elit..."""
 
 
-#asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer')
-
-
-#print(cryp.title)
-
-#db_session.add(cryp)
-#db_session.commit()
-
 @mod.route('/')
 def index():
     test_filters = [] #[{"type": "Author", "value": "Neal"},{"Title": "Crypt"} ]
