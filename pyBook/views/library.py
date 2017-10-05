@@ -15,37 +15,16 @@ lorem = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in enim
 
 @mod.route('/')
 def index():
-    test_filters = [] #[{"type": "Author", "value": "Neal"},{"Title": "Crypt"} ]
     if file.exists("pyBook.db"):
         print('db exists')
     else:
         print("creating db")
         init_db()
-
     users = User.query.all()
     if len(users) == 0:
-        salt = '4135adc2956ffc180323adc96ed37625c30911f7c8bc18e6c5e2bccceaef55e7'
-        asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer', salt, secrets.hash_password(salt, 'asouer'))
-        guest = User('guest', 'guest@gmail.com', 0, 'Guest', 'User', salt, secrets.hash_password(salt, 'guest'))
-
-
-        test_users = [asouer, guest]
-
-
-        db_session.add_all(test_users)
-        db_session.commit()
         return redirect(url_for('library.setup'))
-
-    for item in session.items():
-        print(item)
     books = Book.query.all()
-
-    #for book in books:
-    #    print(book)
-    #    print(book.isbn_10)
-    #    print(book.isbn_13)
-    #    print(book.json())
-    return render_template('library/index.html', Books=books, Filters=test_filters)
+    return render_template('library/index.html', Books=books)
 
 
 @mod.route('/log_in', methods=['GET', 'POST'])
@@ -75,16 +54,29 @@ def log_out():
     return redirect(url_for('library.index'))
 
 
-@mod.route('/save', methods=['GET', 'POST'])
-def save():
-    print("in save()")
+@mod.route('/edit', methods=['GET', 'POST'])
+def edit():
+    print("in edit()")
     if request.method == 'POST':
-        print('its a post')
-        #print (request.form)
-        print("title: " + request.form['title'])
+        # get book id from form
+        book_id = request.form['book_id']
+
+        # get book by book_id
+        edit_book = Book.query.get(book_id)
+
+        # update book in db
+        edit_book.book_title = request.form['title']
+        edit_book.author_first_name = request.form['author_fname']
+        edit_book.author_last_name = request.form['author_lname']
+        edit_book.isbn_ten = request.form['isbn_10']
+        edit_book.isbn_thirteen = request.form['isbn_13']
+        edit_book.synopsis = request.form['synopsis']
+        edit_book.book_sort = request.form['sort'];
+
+        # commit changes
+        db_session.commit()
         return redirect(url_for('library.index'))
     else:
-        print('just a get')
         return redirect(url_for('library.index'))
 
 
@@ -132,6 +124,17 @@ def setup():
     if len(User.query.all()) > 0:
         return redirect(url_for('library.index'))
     else:
+        salt = '4135adc2956ffc180323adc96ed37625c30911f7c8bc18e6c5e2bccceaef55e7'
+        asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer', salt, secrets.hash_password(salt, 'asouer'))
+        guest = User('guest', 'guest@gmail.com', 0, 'Guest', 'User', salt, secrets.hash_password(salt, 'guest'))
+
+
+        test_users = [asouer, guest]
+
+
+        db_session.add_all(test_users)
+        db_session.commit()
+
         return render_template('library/setup.html')
 
 

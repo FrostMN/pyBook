@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, SmallInteger
 from pyBook.database import Base
 import json
-from pyBook.utils.secrets import hash_password, generate_salt
 
 
 class User(Base):
@@ -52,37 +51,6 @@ class User(Base):
     def hash(self):
         return self.pw_hash
 
-            # @property
-    # def admin(self):
-    #     if self._admin == 1:
-    #         return True
-    #     else:
-    #         return False
-    #
-    # @property
-    # def user_name(self):
-    #     return self._user_name
-    #
-    # @property
-    # def email(self):
-    #     return self._email
-    #
-    # @property
-    # def first_name(self):
-    #     return self._first_name
-    #
-    # @property
-    # def last_name(self):
-    #     return self._last_name
-    #
-    # @property
-    # def salt(self):
-    #     return self._salt
-    #
-    # @property
-    # def hash(self):
-    #     return self._hash
-
 
 class Book(Base):
     __tablename__ = 'books'
@@ -99,9 +67,10 @@ class Book(Base):
 
     def __init__(self, title=None, isbn_ten=None, isbn_thirteen=None,
                  author_first_name=None, author_last_name=None, status=0, synopsis=None,
-                 image='default.jpg', book_id=None):
+                 image='default.jpg', sort=None, book_id=None):
         self.book_id = book_id
         self.book_title = title
+        self.book_sort = sort
         self.isbn_ten = isbn_ten
         self.isbn_thirteen = isbn_thirteen
         self.author_first_name = author_first_name
@@ -115,7 +84,6 @@ class Book(Base):
 
     def __str__(self):
         return json.dumps(self.json(), indent=4, sort_keys=True)
-        #return str(self.json())
 
     def json(self):
         return dict(title=self.title, isbn_10=self.isbn_10, isbn_13=self.isbn_13, author=self.author_first_name +
@@ -130,6 +98,10 @@ class Book(Base):
         return str(self.book_title)
 
     @property
+    def sort(self):
+        return str(self.book_sort)
+
+    @property
     def isbn_10(self):
         return str(self.isbn_ten).zfill(10)
 
@@ -140,40 +112,3 @@ class Book(Base):
     @property
     def id(self):
         return str(self.book_id)
-
-
-            # @property
-    # def id(self):
-    #     return self._book_id
-    #
-    # @property
-    # def title(self):
-    #     return self._title
-    #
-    # @property
-    # def isbn_10(self):
-    #     return str(self._isbn_10).zfill(10)
-    #
-    # @property
-    # def isbn_13(self):
-    #     return str(self._isbn_13).zfill(13)
-    #
-    # @property
-    # def author_first_name(self):
-    #     return self._author_first_name
-    #
-    # @property
-    # def author_last_name(self):
-    #     return self._author_last_name
-    #
-    # @property
-    # def status(self):
-    #     if self._status == 1:
-    #         return True
-    #     else:
-    #         return False
-    #
-    # @property
-    # def synopsis(self):
-    #     return self._synopsis
-    #
