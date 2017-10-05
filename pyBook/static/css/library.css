@@ -384,8 +384,8 @@ html {
     min-width: 540px;
     max-width: 540px;
     margin-bottom: 2em;
-    margin-left: 1em;
-    margin-right: 1em;
+    margin-left: 0;/*1em;*/
+    margin-right: 0;/*1em;*/
 }
 
 
@@ -857,6 +857,65 @@ html {
 
 /****************************************
  *                                      *
+ *   CSS for newBook modal follow       *
+ *                                      *
+ ****************************************/
+
+#container .new-book-modal {
+    position: absolute;
+    top: 3em;
+    left: 3em;
+    right: 3em;
+    height: 20em;
+    width: 45em;
+    display: inline-block;
+    text-align: left;
+    background-color: white;
+    border: 1px solid var(--main-element-color);
+    z-index: 120;
+    margin: 3em auto;
+}
+
+#container .new-book-thumb {
+    position: relative;
+    top: 1em;
+    left: 1em;
+    height: 200px;
+    #border-right: 1px solid var(--main-element-color);
+    border: 1px solid var(--main-element-color);
+    float: left;
+    padding: 0;
+}
+
+#container .new-book-cover {
+    #width: 250px;
+    #height: 100%;
+    width: 135px;
+    height: 200px;
+    #border-right: 1px solid var(--main-element-color);
+    margin: 0;
+}
+
+#container .new-book-modal-text {
+    height: calc(100% - 1em);
+    width: calc(100% - 2em - 140px );
+    float: right;
+    margin-left: 2em;
+    #border-left: 1px solid var(--main-element-color);
+    padding-top: 1em;
+    padding-left: 0;
+}
+
+#container .cancel-modal {
+    color: black;
+}
+
+#container .new-book-textarea {
+    resize: none;
+}
+
+/****************************************
+ *                                      *
  *      CSS for lend modal follow       *
  *                                      *
  ****************************************/
@@ -934,4 +993,26 @@ html {
 
 #login button {
     float: right;
+}
+
+/****************************************
+ *                                      *
+ *    CSS for add-book modal follows    *
+ *                                      *
+ ****************************************/
+
+#container .add-book-modal {
+    #height: 20em;
+    #width: 45em;
+    position: fixed;
+    right: 0;
+    top: -1em;
+    font-size: 20pt;
+    padding: .5em;
+    display: inline-block;
+    text-align: left;
+    background-color: white;
+    border: 1px solid var(--main-element-color);
+    z-index: 120;
+    margin: 3em auto;
 }

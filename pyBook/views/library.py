@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from pyBook.models import Book, User
 from pyBook.database import init_db, db_session
+import pyBook.utils.api as api
 import pyBook.utils.files as file
 import pyBook.utils.secrets as secrets
 
@@ -107,11 +108,35 @@ def add_test():
 
     return redirect(url_for('library.index'))
 
+@mod.route('/add', methods=['GET', 'POST'])
+def add():
+    if request.method == 'POST':
+        title = request.form['title']
+        isbn_10 = request.form['isbn_10']
+        isbn_13 = request.form['isbn_13']
+        fname = request.form['author_fname']
+        lname = request.form['author_lname']
+        synopsis = request.form['synopsis']
+
+        book = Book(title, isbn_10, isbn_13, fname, lname, 0, synopsis, 'default.jpg')
+
+        db_session.add(book)
+        db_session.commit()
+        return redirect(url_for('library.index'))
+    else:
+        return redirect(url_for('library.index'))
+
+
 @mod.route('/setup')
 def setup():
     if len(User.query.all()) > 0:
         return redirect(url_for('library.index'))
     else:
         return render_template('library/setup.html')
+
+
+@mod.route('/api/<isbn>')
+def api_new(isbn):
+        return api.getBook(isbn)
 
 
