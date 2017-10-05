@@ -1,6 +1,21 @@
 
 
-function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, book_id) {
+function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, book_id) {
+
+    if( sort == "None") {
+        alert("no sort")
+        alert("|" + title.substring(0, 4) + "|")
+        if (title.substring(0, 4) == "The ") {
+            alert(title.substring(0, 3))
+            sort = title.substring(4);
+        } else if (title.substring(0, 2) == "A ") {
+            sort = title.substring(2);
+        } else {
+            sort = title;
+        }
+    }
+
+
 
     var modal = document.createElement("div");
     modal.setAttribute("id", "edit" + isbn_10);
@@ -35,7 +50,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, bo
     // create edit form
     var edit_form = document.createElement("form");
     edit_form.setAttribute("id", "edit-form" + isbn_10 );
-    edit_form.setAttribute("action", "/save");
+    edit_form.setAttribute("action", "/edit");
     edit_form.setAttribute("method", "post");
 
     // create book_id hidden input
@@ -56,6 +71,18 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, bo
     title_text_box.setAttribute("placeholder", "Title");
     title_text_box.setAttribute("value", title);
     //title_text_box.innerHTML = "Title: ";
+
+    // create sort label
+    var sort_label = document.createElement("label");
+    sort_label.setAttribute("for", "title");
+    sort_label.innerHTML = "Sort: ";
+
+    // create sort text box
+    var sort_text_box = document.createElement("input");
+    sort_text_box.setAttribute("type", "text");
+    sort_text_box.setAttribute("name", "sort");
+    sort_text_box.setAttribute("placeholder", "Sort by");
+    sort_text_box.setAttribute("value", sort);
 
     // create author label
     var author_label = document.createElement("label");
@@ -124,6 +151,11 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, bo
 
     edit_form.appendChild(title_label);
     edit_form.appendChild(title_text_box);
+
+    edit_form.appendChild(document.createElement('br'));
+
+    edit_form.appendChild(sort_label);
+    edit_form.appendChild(sort_text_box);
 
     edit_form.appendChild(document.createElement('br'));
 
@@ -292,6 +324,8 @@ function addBookModal() {
     isbn_box.focus();
 }
 
+// I found the getJSON and parts of the addBook function from stack overflow           //
+// https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript //
 
 function addBook(isbn) {
     getJSON("/api/" + isbn, function (err, book) {
