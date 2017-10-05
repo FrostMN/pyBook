@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, SmallInteger
 from pyBook.database import Base
+import json
 from pyBook.utils.secrets import hash_password, generate_salt
 
 
@@ -111,6 +112,10 @@ class Book(Base):
 
     def __repr__(self):
         return '<Book %r>' % self.title
+
+    def __str__(self):
+        return json.dumps(self.json(), indent=4, sort_keys=True)
+        #return str(self.json())
 
     def json(self):
         return dict(title=self.title, isbn_10=self.isbn_10, isbn_13=self.isbn_13, author=self.author_first_name +
