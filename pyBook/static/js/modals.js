@@ -3,10 +3,8 @@
 function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, book_id) {
 
     if( sort == "None") {
-        alert("no sort")
-        alert("|" + title.substring(0, 4) + "|")
         if (title.substring(0, 4) == "The ") {
-            alert(title.substring(0, 3))
+            //alert(title.substring(0, 3));
             sort = title.substring(4);
         } else if (title.substring(0, 2) == "A ") {
             sort = title.substring(2);
@@ -374,10 +372,8 @@ var getJSON = function(url, callback) {
 function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, book_id) {
 
     if( sort == "None") {
-        alert("no sort")
-        alert("|" + title.substring(0, 4) + "|")
         if (title.substring(0, 4) == "The ") {
-            alert(title.substring(0, 3))
+            //alert(title.substring(0, 3));
             sort = title.substring(4);
         } else if (title.substring(0, 2) == "A ") {
             sort = title.substring(2);
@@ -386,6 +382,15 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
         }
     }
 
+    var api_img_url = 'http://covers.openlibrary.org/b/isbn/' + isbn_10 + '-L.jpg';
+    var file_name = sort.substring(0,5) + isbn_10;
+
+    book_img = api_img_url;
+
+    if (title == 'not found') {
+        book_img = '/static/img/covers/default.jpg';
+        file_name = "default.jpg";
+    }
 
 
     var newBookID = 'new' + isbn_10;
@@ -431,6 +436,18 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     book_id_input.setAttribute("type", "hidden");
     book_id_input.setAttribute("name", "book_id");
     book_id_input.setAttribute("value", book_id);
+
+    // create image_url hidden input
+    var image_url_input = document.createElement("input");
+    image_url_input.setAttribute("type", "hidden");
+    image_url_input.setAttribute("name", "image_url");
+    image_url_input.setAttribute("value", book_img);
+
+    // create image_name hidden input
+    var image_name = document.createElement("input");
+    image_name.setAttribute("type", "hidden");
+    image_name.setAttribute("name", "image_name");
+    image_name.setAttribute("value", file_name);
 
     // create title label
     var title_label = document.createElement("label");
@@ -521,6 +538,8 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
 
     // build edit-form from components
     edit_form.appendChild(book_id_input);
+    edit_form.appendChild(image_url_input);
+    edit_form.appendChild(image_name);
 
     edit_form.appendChild(title_label);
     edit_form.appendChild(title_text_box);
@@ -593,3 +612,4 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     document.getElementById("container").style.height = "calc(100vh - 7em)";
     document.getElementById("container").style.overflow = "hidden";
 }
+

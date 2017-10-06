@@ -70,7 +70,7 @@ class Book(Base):
                  image='default.jpg', sort=None, book_id=None):
         self.book_id = book_id
         self.book_title = title
-        self.book_sort = sort
+        self.book_sort = str(sort).lower()
         self.isbn_ten = isbn_ten
         self.isbn_thirteen = isbn_thirteen
         self.author_first_name = author_first_name
