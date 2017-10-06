@@ -26,6 +26,9 @@ def index():
 
     books = db_session.query(Book).order_by("book_sort").all()
 
+    for book in books:
+        print(book.title)
+
     #books = Book.query.all()  #.order_by('books.book_sort')
     return render_template('library/index.html', Books=books)
 
@@ -99,17 +102,21 @@ def lend():
 # TODO probably remove... see if it still double adds
 @mod.route('/add_test', methods=['GET', 'POST'])
 def add_test():
-    cryp = Book('Cryptonomicon', '0380973464' , '9780380973460', 'Neal', 'Stephenson', 0, lorem, 'Cryptonomicon.jpg')
-    harr = Book('Harry Potter and the Philosopher\'s Stone', '0747532699', '9780747532699', 'J.K.', 'Rowling', 0, lorem, 'Stone.jpg')
-    ream = Book('Reamde', '0061977969', '9780061977961', 'Neal', 'Stephenson', 0, lorem, 'default.jpg')
-    stra = Book('The Stranger', '0679420266', '9780679420262', 'Albert', 'Camus', 0, lorem, 'Stranger.jpg')
-    colo = Book('The Colour of Magic', '0062225677', '9780062225672', 'Terry', 'Pratechett', 0, lorem, 'Magic.jpg')
-    test_books = [cryp, harr, ream, stra, colo]
-
-    db_session.add_all(test_books)
-    db_session.commit()
-
+    if len(Book.query.all()) == 0:
+        cryp = Book('Cryptonomicon', '0380973464' , '9780380973460', 'Neal', 'Stephenson', 0, lorem, 'crypt0380973464.jpg', 'cryptonomicon')
+        harr = Book('Harry Potter and the Philosopher\'s Stone', '0747532699', '9780747532699', 'J.K.', 'Rowling', 0, lorem, 'harry0747532699.jpg', 'harry')
+        quic = Book('Quicksilver', '0380977427', '9780380977420', 'Neal', 'Stephenson', 0, lorem, 'quick0380977427.jpg', 'quicksilver')
+        ream = Book('Reamde', '0061977969', '9780061977961', 'Neal', 'Stephenson', 0, lorem, 'reamd0061977969.jpg', 'reamde')
+        conf = Book('The Confusion', '0060523867', '9780060523862', 'Neal', 'Stephenson', 0, lorem, 'confu0060523867.jpg', 'confusion')
+        stra = Book('The Stranger', '0679420266', '9780679420262', 'Albert', 'Camus', 0, lorem, 'stran0679420266.jpg', 'stranger')
+        colo = Book('The Colour of Magic', '0062225677', '9780062225672', 'Terry', 'Pratechett', 0, lorem, 'color0062225677.jpg', 'colour')
+        syst = Book('The System of the World', '0060523875', '9780060523879', 'Neal', 'Stephenson', 0, lorem, 'SystemWorld.jpg', 'system of the World')
+        test_books = [cryp, harr, ream, stra, colo, quic, conf, syst]
+        db_session.add_all(test_books)
+        db_session.commit()
+        return redirect(url_for('library.index'))
     return redirect(url_for('library.index'))
+
 
 
 # TODO check for logged in
@@ -122,9 +129,29 @@ def add():
         fname = request.form['author_fname']
         lname = request.form['author_lname']
         synopsis = request.form['synopsis']
-        sort = request.form['sort'];
+        sort = request.form['sort']
 
-        book = Book(title, isbn_10, isbn_13, fname, lname, 0, synopsis, 'default.jpg', sort)
+        remote_image = request.form['image_url']
+        print("request.form['image_name']: " + request.form['image_name'])
+        if request.form['image_name'] != 'default.jpg':
+            image_name = request.form['image_name'] + ".jpg"
+            image_name = image_name.lower()
+            image_name = image_name.replace(" ", "")
+
+        else:
+            image_name = 'default.jpg'
+
+        print(image_name)
+        print(remote_image)
+
+
+        book = Book(title, isbn_10, isbn_13, fname, lname, 0, synopsis, image_name, sort)
+
+        print(image_name)
+
+        if image_name != 'default.jpg':
+            print('fetching' + image_name)
+            file.retrieve(remote_image, image_name)
 
         db_session.add(book)
         db_session.commit()
@@ -149,8 +176,8 @@ def setup():
         db_session.add_all(test_users)
         db_session.commit()
 
-        #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt() + secrets.generate_salt())
-        #file.updateConfig("isbndb_Key", "UOPFKJF1")
+        #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
+        #file.updateConfig("isbndb_Key", "")
         #file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return render_template('library/setup.html')
@@ -162,3 +189,12 @@ def api_new(isbn):
         return api.getBook(isbn)
 
 
+@mod.route('/file_test')
+def file_test():
+    return """
+    <form action="/upload" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" value="Upload Image" name="submit">
+    </form>
+    """
