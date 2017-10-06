@@ -162,25 +162,29 @@ def add():
 
 # TODO crate a page for adding an admin user on first run when there are no users yet
 # TODO add session testing
-@mod.route('/setup')
+@mod.route('/setup', methods=['GET', 'POST'])
 def setup():
-    if len(User.query.all()) > 0:
-        return redirect(url_for('library.index'))
+    if request.method == 'GET':
+        if len(User.query.all()) > 0:
+            return redirect(url_for('library.index'))
+        else:
+            salt = '4135adc2956ffc180323adc96ed37625c30911f7c8bc18e6c5e2bccceaef55e7'
+            asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer', salt, secrets.hash_password(salt, 'asouer'))
+            guest = User('guest', 'guest@gmail.com', 0, 'Guest', 'User', salt, secrets.hash_password(salt, 'guest'))
+
+            test_users = [asouer, guest]
+
+            db_session.add_all(test_users)
+            db_session.commit()
+
+            #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
+            #file.updateConfig("isbndb_Key", "")
+            #file.updateConfig("DEBUG = True", "DEBUG = False")
+
+            return render_template('library/setup.html')
     else:
-        salt = '4135adc2956ffc180323adc96ed37625c30911f7c8bc18e6c5e2bccceaef55e7'
-        asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer', salt, secrets.hash_password(salt, 'asouer'))
-        guest = User('guest', 'guest@gmail.com', 0, 'Guest', 'User', salt, secrets.hash_password(salt, 'guest'))
-
-        test_users = [asouer, guest]
-
-        db_session.add_all(test_users)
-        db_session.commit()
-
-        #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
-        #file.updateConfig("isbndb_Key", "")
-        #file.updateConfig("DEBUG = True", "DEBUG = False")
-
         return render_template('library/setup.html')
+
 
 # TODO finish fleshing out api
 # TODO maybe move it into its own view
