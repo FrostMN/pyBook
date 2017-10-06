@@ -178,7 +178,7 @@ def setup():
 
         #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
         #file.updateConfig("isbndb_Key", "")
-        #file.updateConfig("DEBUG = True", "DEBUG = False") v
+        #file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return render_template('library/setup.html')
 
