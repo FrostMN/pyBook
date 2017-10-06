@@ -150,7 +150,7 @@ def setup():
         db_session.commit()
 
         #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt() + secrets.generate_salt())
-        #file.updateConfig("isbndb_Key", "UOPFKJF1")
+        #file.updateConfig("isbndb_Key", "")
         #file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return render_template('library/setup.html')
