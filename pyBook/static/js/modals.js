@@ -304,10 +304,11 @@ function addBookModal() {
     var isbn_box = document.createElement("input");
     isbn_box.setAttribute("name", "isbn");
     isbn_box.setAttribute("type", "text");
+    isbn_box.setAttribute("onkeydown", "addBook(document.getElementById('add-by-isbn').value, event)");
     isbn_box.setAttribute("id", "add-by-isbn");
 
     var isbn_button = document.createElement("button");
-    isbn_button.setAttribute("onclick", "addBook(document.getElementById('add-by-isbn').value)");
+    isbn_button.setAttribute("onclick", "addBook(document.getElementById('add-by-isbn').value, event)");
     isbn_button.innerHTML = "Search";
 
     add_book_modal.appendChild(isbn_label);
@@ -328,19 +329,27 @@ function addBookModal() {
 // https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript //
 
 function addBook(isbn) {
-    getJSON("/api/" + isbn, function (err, book) {
-        //alert("http://127.0.0.1:5000/api/" + isbn);
-        if (err !== null) {
-            alert('Something went wrong: ' + err);
-        } else {
-            //alert('Your query count: ' + book.author);
+    if ((event.keyCode == 13) || (event.type == "click")) {
+        if (isbn != "") {    // TODO add an isbn validation method somewhere
+            getJSON("/api/" + isbn, function (err, book) {
+                //alert("http://127.0.0.1:5000/api/" + isbn);
+                if (err !== null) {
+                    alert('Something went wrong: ' + err);
+                } else {
+                    //alert('Your query count: ' + book.author);
 
-            var auth_fname = book.author.split(" ")[0];
-            var auth_lname = book.author.split(" ")[1];
+                    var auth_fname = book.author.split(" ")[0];
+                    var auth_lname = book.author.split(" ")[1];
 
-            newBookModal(book.title, auth_fname, auth_lname, book.isbn_10, book.isbn_13, book.image, book.synopsis);
+                    closeModal('add-book');
+                    var mod = document.getElementById('add-book');
+                    mod.outerHTML = "";
+                    delete mod;
+                    newBookModal(book.title, auth_fname, auth_lname, book.isbn_10, book.isbn_13, book.image, book.synopsis, "None");
+                }
+            });
         }
-    })
+    }
 }
 
 var getJSON = function(url, callback) {
@@ -362,7 +371,22 @@ var getJSON = function(url, callback) {
 
 
 
-function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, book_id) {
+function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, book_id) {
+
+    if( sort == "None") {
+        alert("no sort")
+        alert("|" + title.substring(0, 4) + "|")
+        if (title.substring(0, 4) == "The ") {
+            alert(title.substring(0, 3))
+            sort = title.substring(4);
+        } else if (title.substring(0, 2) == "A ") {
+            sort = title.substring(2);
+        } else {
+            sort = title;
+        }
+    }
+
+
 
     var newBookID = 'new' + isbn_10;
 
@@ -420,6 +444,18 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     title_text_box.setAttribute("placeholder", "Title");
     title_text_box.setAttribute("value", title);
     //title_text_box.innerHTML = "Title: ";
+
+    // create sort label
+    var sort_label = document.createElement("label");
+    sort_label.setAttribute("for", "title");
+    sort_label.innerHTML = "Sort: ";
+
+    // create sort text box
+    var sort_text_box = document.createElement("input");
+    sort_text_box.setAttribute("type", "text");
+    sort_text_box.setAttribute("name", "sort");
+    sort_text_box.setAttribute("placeholder", "Sort by");
+    sort_text_box.setAttribute("value", sort);
 
     // create author label
     var author_label = document.createElement("label");
@@ -488,6 +524,11 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
 
     edit_form.appendChild(title_label);
     edit_form.appendChild(title_text_box);
+
+    edit_form.appendChild(document.createElement('br'));
+
+    edit_form.appendChild(sort_label);
+    edit_form.appendChild(sort_text_box);
 
     edit_form.appendChild(document.createElement('br'));
 

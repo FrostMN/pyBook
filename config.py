@@ -9,6 +9,6 @@ DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'pyBook.db')
 DATABASE_CONNECT_OPTIONS = {}
 
 ISBNDB_URL = 'http://isbndb.com/api/v2/json/{{KEY}}/book/'
-ISBNDB_API_KEY = 'UOPFKJF1'
+ISBNDB_API_KEY = 'isbndb_Key'
 
 del os

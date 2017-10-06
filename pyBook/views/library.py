@@ -23,28 +23,38 @@ def index():
     users = User.query.all()
     if len(users) == 0:
         return redirect(url_for('library.setup'))
-    books = Book.query.all()
+
+    books = db_session.query(Book).order_by("book_sort").all()
+
+    #books = Book.query.all()  #.order_by('books.book_sort')
     return render_template('library/index.html', Books=books)
 
 
+# log in process
 @mod.route('/log_in', methods=['GET', 'POST'])
 def log_in():
-    if request.method == 'POST':
+    if (request.method == 'POST') and ('user' not in session):
         uname = request.form['uname']
-        pword = request.form['uname']
+        pword = request.form['pword']
+        print(uname)
+        print(pword)
         if not secrets.user_exists(uname):
-            print("no username")
+            print("bad username")
+            return redirect(url_for('library.index'))
         elif not secrets.check_hash(uname, pword):
             print("bad password")
+            return redirect(url_for('library.index'))
         else:
             session['logged_in'] = True
             usr = secrets.get_user(uname)
             session['user'] = usr.user
             session['admin'] = usr.is_admin
             return redirect(url_for('library.index'))
-    return redirect(url_for('library.index'))
+    else:
+        return redirect(url_for('library.index'))
 
 
+# logs out current user
 @mod.route('/log_out', methods=['GET', 'POST'])
 def log_out():
     if session.get('logged_in'):
@@ -53,7 +63,7 @@ def log_out():
             return redirect(url_for('library.index'))
     return redirect(url_for('library.index'))
 
-
+# TODO add check for loged in and admin
 @mod.route('/edit', methods=['GET', 'POST'])
 def edit():
     print("in edit()")
@@ -79,13 +89,14 @@ def edit():
     else:
         return redirect(url_for('library.index'))
 
-
+# TODO implement lending... have list of books attached to borrower... normalize db
 @mod.route('/lend', methods=['GET', 'POST'])
 def lend():
     print (request.form)
     return redirect(url_for('library.index'))
 
 
+# TODO probably remove... see if it still double adds
 @mod.route('/add_test', methods=['GET', 'POST'])
 def add_test():
     cryp = Book('Cryptonomicon', '0380973464' , '9780380973460', 'Neal', 'Stephenson', 0, lorem, 'Cryptonomicon.jpg')
@@ -100,6 +111,8 @@ def add_test():
 
     return redirect(url_for('library.index'))
 
+
+# TODO check for logged in
 @mod.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
@@ -109,8 +122,9 @@ def add():
         fname = request.form['author_fname']
         lname = request.form['author_lname']
         synopsis = request.form['synopsis']
+        sort = request.form['sort'];
 
-        book = Book(title, isbn_10, isbn_13, fname, lname, 0, synopsis, 'default.jpg')
+        book = Book(title, isbn_10, isbn_13, fname, lname, 0, synopsis, 'default.jpg', sort)
 
         db_session.add(book)
         db_session.commit()
@@ -119,6 +133,8 @@ def add():
         return redirect(url_for('library.index'))
 
 
+# TODO crate a page for adding an admin user on first run when there are no users yet
+# TODO add session testing
 @mod.route('/setup')
 def setup():
     if len(User.query.all()) > 0:
@@ -128,16 +144,19 @@ def setup():
         asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer', salt, secrets.hash_password(salt, 'asouer'))
         guest = User('guest', 'guest@gmail.com', 0, 'Guest', 'User', salt, secrets.hash_password(salt, 'guest'))
 
-
         test_users = [asouer, guest]
-
 
         db_session.add_all(test_users)
         db_session.commit()
 
+        #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt() + secrets.generate_salt())
+        #file.updateConfig("isbndb_Key", "UOPFKJF1")
+        #file.updateConfig("DEBUG = True", "DEBUG = False")
+
         return render_template('library/setup.html')
 
-
+# TODO finish fleshing out api
+# TODO maybe move it into its own view
 @mod.route('/api/<isbn>')
 def api_new(isbn):
         return api.getBook(isbn)
