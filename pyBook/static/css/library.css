@@ -1036,3 +1036,16 @@ html {
     z-index: 120;
     margin: 3em auto;
 }
+
+
+/****************************************
+ *                                      *
+ *      CSS for setup page follows      *
+ *                                      *
+ ****************************************/
+
+#setup-page .main {
+    width: 30em;
+    height: 20em;
+    margin: 3em auto;
+}

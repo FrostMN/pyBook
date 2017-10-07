@@ -110,7 +110,7 @@ def add_test():
         conf = Book('The Confusion', '0060523867', '9780060523862', 'Neal', 'Stephenson', 0, lorem, 'confu0060523867.jpg', 'confusion')
         stra = Book('The Stranger', '0679420266', '9780679420262', 'Albert', 'Camus', 0, lorem, 'stran0679420266.jpg', 'stranger')
         colo = Book('The Colour of Magic', '0062225677', '9780062225672', 'Terry', 'Pratechett', 0, lorem, 'color0062225677.jpg', 'colour')
-        syst = Book('The System of the World', '0060523875', '9780060523879', 'Neal', 'Stephenson', 0, lorem, 'SystemWorld.jpg', 'system of the World')
+        syst = Book('The System of the World', '0060523875', '9780060523879', 'Neal', 'Stephenson', 0, lorem, 'syste0060523875.jpg', 'system of the World')
         test_books = [cryp, harr, ream, stra, colo, quic, conf, syst]
         db_session.add_all(test_books)
         db_session.commit()
@@ -119,7 +119,7 @@ def add_test():
 
 
 
-# TODO check for logged in
+# TODO check for logged in and admin
 @mod.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
@@ -137,13 +137,11 @@ def add():
             image_name = request.form['image_name'] + ".jpg"
             image_name = image_name.lower()
             image_name = image_name.replace(" ", "")
-
         else:
             image_name = 'default.jpg'
 
         print(image_name)
         print(remote_image)
-
 
         book = Book(title, isbn_10, isbn_13, fname, lname, 0, synopsis, image_name, sort)
 
@@ -168,22 +166,30 @@ def setup():
         if len(User.query.all()) > 0:
             return redirect(url_for('library.index'))
         else:
-            salt = '4135adc2956ffc180323adc96ed37625c30911f7c8bc18e6c5e2bccceaef55e7'
-            asouer = User('asouer', 'asouer@gmail.com', 1, 'Aaron', 'Souer', salt, secrets.hash_password(salt, 'asouer'))
-            guest = User('guest', 'guest@gmail.com', 0, 'Guest', 'User', salt, secrets.hash_password(salt, 'guest'))
-
-            test_users = [asouer, guest]
-
-            db_session.add_all(test_users)
-            db_session.commit()
-
-            #file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
-            #file.updateConfig("isbndb_Key", "")
-            #file.updateConfig("DEBUG = True", "DEBUG = False")
-
             return render_template('library/setup.html')
     else:
-        return render_template('library/setup.html')
+        fname = request.form['fname']
+        lname = request.form['lname']
+        email = request.form['email']
+        uname = request.form['uname']
+        pword = request.form['pword']
+        isbndb = request.form['isbndb']
+
+        salt = secrets.generate_salt()
+
+        print(pword)
+        print(salt)
+
+        user = User(uname, email, 1, fname, lname, salt, secrets.hash_password(pword, salt))
+
+        db_session.add(user)
+        db_session.commit()
+
+        file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
+        file.updateConfig("isbndb_Key", isbndb)
+        file.updateConfig("DEBUG = True", "DEBUG = False")
+
+        return redirect(url_for('library.index'))
 
 
 # TODO finish fleshing out api
@@ -192,13 +198,3 @@ def setup():
 def api_new(isbn):
         return api.getBook(isbn)
 
-
-@mod.route('/file_test')
-def file_test():
-    return """
-    <form action="/upload" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload Image" name="submit">
-    </form>
-    """

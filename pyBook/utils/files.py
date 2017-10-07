@@ -9,19 +9,15 @@ def exists(file):
     else:
         return False
 
+
 # changes placeholder in config file to given value
 def updateConfig(placeholder, value):
     conf = pyBook.app.root_path[:-7] + "/config.py"
     with open(conf) as f:
         s = f.read()
-        print(s)
         if placeholder not in s:
-            print( '"{placeholder}" not found in {conf}.'.format(**locals()) )
             return
-
-    # Safely write the changed content, if found in the file
     with open(conf, 'w') as f:
-        print( 'Changing "{placeholder}" to "{value}" in {conf}'.format(**locals()) )
         s = s.replace(placeholder, value)
         f.write(s)
 
@@ -51,13 +47,12 @@ def retrieve(url, file):
     save_to = pyBook.app.config['COVER_UPLOAD_FOLDER'] + "/" + file
     if not exists(save_to):
         print("creating " + file)
-        with open(save_to, "wb") as f:
-            f.write(urllib.request.urlopen(url).read())
-            f.close()
+        print(len(urllib.request.urlopen(url).read()))
+        if len(urllib.request.urlopen(url).read()) != 807:
+            with open(save_to, "wb") as f:
+                f.write(urllib.request.urlopen(url).read())
+                f.close()
+        else:
+            return False
     else:
         print(file + " exists")
-
-img_url = 'http://covers.openlibrary.org/b/isbn/0385472579-L.jpg'
-
-retrieve(img_url, "Test 123456678.jpg")
-
