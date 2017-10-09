@@ -120,17 +120,22 @@ class Book(Base):
         star_string = "unrated"
         half_star = False
         stars = math.modf(self.book_stars)[1]
+        if math.modf(self.book_stars)[0] != 0:
+#            print(math.modf(self.book_stars)[0])
+#            print("half star true")
+            half_star = True
         if stars > 0:
-            if math.modf(self.book_stars)[0] != 0:
-                print(math.modf(self.book_stars)[0])
-                print("half star true")
-                half_star = True
             star_string = int(stars) * "<i class=\"fa fa-star\" aria-hidden=\"true\"></i>"
-            if half_star:
+        if half_star:
+            if stars == 0:
+                star_string = "<i class=\"fa fa-star-half-o\" aria-hidden=\"true\"></i>"
+            else:
                 star_string += "<i class=\"fa fa-star-half-o\" aria-hidden=\"true\"></i>"
+            if star_string != "unrated":
                 for i in range(0 , 5 - (int(stars) + 1)):
                     star_string += "<i class =\"fa fa-star-o\" aria-hidden=\"true\"></i>"
-            else:
+        else:
+            if star_string != "unrated":
                 for i in range(0 , 5 - (int(stars))):
                     star_string += "<i class =\"fa fa-star-o\" aria-hidden=\"true\"></i>"
         return str(star_string)

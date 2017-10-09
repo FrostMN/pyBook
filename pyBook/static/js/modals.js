@@ -3,17 +3,11 @@
 function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, stars, book_id) {
 
     if( sort == "None") {
-        if (title.substring(0, 4) == "The ") {
-            //alert(title.substring(0, 3));
-            sort = title.substring(4);
-        } else if (title.substring(0, 2) == "A ") {
-            sort = title.substring(2);
-        } else {
-            sort = title;
-        }
+        sort = stripLeadingArticle(title);
     }
 
-
+    var escaped_title = escapeQuotes(title);
+    var escaped_synopsis = escapeQuotes(synopsis);
 
     var star_select = document.createElement("select");
     star_select.setAttribute("name", "stars");
@@ -193,6 +187,12 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     edit_button.setAttribute("type", "submit");
     edit_button.innerHTML = "Save";
 
+    // create delete button
+    var delete_button = document.createElement("button");
+    delete_button.setAttribute("onclick", "deleteModal('" + isbn_10 + "', '" + book_id + "', '" + escaped_title +"')");
+    delete_button.setAttribute("type", "button");
+    delete_button.innerHTML = "Delete";
+
     // create isbn_13 label
     var synopsis_label = document.createElement("label");
     synopsis_label.setAttribute("for", "synopsis");
@@ -202,7 +202,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     var text_area = document.createElement("textarea");
     text_area.setAttribute("class", "edit-textarea");
     text_area.setAttribute("name", "synopsis");
-    text_area.innerHTML = synopsis;
+    text_area.innerHTML = escaped_synopsis;
 
 
     // build edit-form from components
@@ -244,6 +244,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
 
     edit_form.appendChild(document.createElement('br'));
 
+    edit_form.appendChild(delete_button);
     edit_form.appendChild(edit_button);
 
 
@@ -403,11 +404,7 @@ function addBook(isbn) {
                 if (err !== null) {
                     alert('Something went wrong: ' + err);
                 } else {
-                    //alert('Your query count: ' + book.author);
-
-
-                    alert(book)
-
+                    // parse json response from api to propagate forms
                     var auth_fname = book.author.split(" ")[0];
                     var auth_lname = book.author.split(" ")[1];
 
@@ -430,7 +427,6 @@ var getJSON = function(url, callback) {
       var status = xhr.status;
       if (status === 200) {
           for (var name in xhr.response) {
-              alert(name)
           }
         callback(null, xhr.response);
       } else {
@@ -445,14 +441,7 @@ var getJSON = function(url, callback) {
 function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, book_id) {
 
     if( sort == "None") {
-        if (title.substring(0, 4) == "The ") {
-            //alert(title.substring(0, 3));
-            sort = title.substring(4);
-        } else if (title.substring(0, 2) == "A ") {
-            sort = title.substring(2);
-        } else {
-            sort = title;
-        }
+        sort = stripLeadingArticle(title);
     }
 
     var api_img_url = 'http://covers.openlibrary.org/b/isbn/' + isbn_10 + '-L.jpg';
@@ -467,8 +456,6 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
 
 
     var newBookID = 'new' + isbn_10;
-
-
 
     var star_select = document.createElement("select");
     star_select.setAttribute("name", "stars");
@@ -595,7 +582,6 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     title_text_box.setAttribute("name", "title");
     title_text_box.setAttribute("placeholder", "Title");
     title_text_box.setAttribute("value", title);
-    //title_text_box.innerHTML = "Title: ";
 
     // create sort label
     var sort_label = document.createElement("label");
@@ -755,11 +741,101 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
 
 function getStarIndex(stars) {
     star_string = stars.toString();
-    alert(star_string)
     if (stars == "0.0") {
         return 0;
     }
-    if (stars == "5") {
+    if (stars == "0.5") {
+        return 1;
+    }
+    if (stars == "1.0") {
+        return 2;
+    }
+    if (stars == "1.5") {
+        return 3;
+    }
+    if (stars == "2.0") {
+        return 4;
+    }
+    if (stars == "2.5") {
         return 5;
     }
+    if (stars == "3.0") {
+        return 6;
+    }
+    if (stars == "3.5") {
+        return 7;
+    }
+    if (stars == "4.0") {
+        return 8;
+    }
+    if (stars == "4.5") {
+        return 9;
+    }
+    if (stars == "5.0") {
+        return 10;
+    }
+}
+
+function deleteModal(isbn_10, book_id, title) {
+    // create book_id hidden input
+    var book_id_input = document.createElement("input");
+    book_id_input.setAttribute("type", "hidden");
+    book_id_input.setAttribute("name", "book_id");
+    book_id_input.setAttribute("value", book_id);
+
+    var delete_modal = document.createElement('div');
+    delete_modal.setAttribute("id", "delete" + isbn_10 );
+    delete_modal.setAttribute("class", "delete-modal");
+
+    var delete_form = document.createElement('form');
+    delete_form.setAttribute("action", "/delete");
+    delete_form.setAttribute("method", "post");
+
+    var delete_button = document.createElement("button");
+    delete_button.setAttribute("type", "submit");
+    delete_button.innerHTML = "Delete";
+
+    var cancel_button = document.createElement("button");
+    cancel_button.setAttribute("type", "button");
+    cancel_button.setAttribute("onclick", "closeModal('delete" + isbn_10 + "')");
+    cancel_button.innerHTML = "Cancel";
+
+    var delete_warning = document.createElement('h2');
+    delete_warning.innerHTML = "Are you sure you want to delete:?";
+
+    var title_header = document.createElement('h3');
+    title_header.innerHTML = title;
+
+    delete_form.appendChild(book_id_input);
+    delete_form.appendChild(cancel_button);
+    delete_form.appendChild(delete_button);
+
+    delete_modal.appendChild(delete_warning);
+    delete_modal.appendChild(title_header);
+    delete_modal.appendChild(delete_form);
+
+    var outer_modal = document.getElementById('edit' + isbn_10);
+    outer_modal.appendChild(delete_modal);
+}
+
+function stripLeadingArticle(title) {
+    if (title.substring(0, 4) == "The ") {
+        //alert(title.substring(0, 3));
+        stripped = title.substring(4);
+    } else if (title.substring(0, 2) == "A ") {
+        stripped = title.substring(2);
+    } else if (title.substring(0, 4) == "the ") {
+        stripped = title.substring(4);
+    } else if (title.substring(0, 2) == "a ") {
+        stripped = title.substring(2);
+    } else {
+        stripped = title;
+    }
+    return stripped;
+}
+
+function escapeQuotes(string) {
+    var escaped_string = string.replace("'", "&rsquo;");
+    escaped_string = escaped_string.replace('"', "&quot;");
+    return escaped_string;
 }

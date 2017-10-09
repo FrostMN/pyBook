@@ -1042,6 +1042,26 @@ html {
 
 /****************************************
  *                                      *
+ *  CSS for delete-book modal follows   *
+ *                                      *
+ ****************************************/
+
+#container .delete-book {
+    height: 15em;
+    width: 35em;
+    font-size: 20pt;
+    padding: .5em;
+    display: inline-block;
+    text-align: left;
+    background-color: white;
+    border: 1px solid var(--main-element-color);
+    z-index: 220;
+    margin: 3em auto;
+}
+
+
+/****************************************
+ *                                      *
  *      CSS for setup page follows      *
  *                                      *
  ****************************************/
