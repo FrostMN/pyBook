@@ -1,6 +1,6 @@
 
 
-function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, book_id) {
+function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, stars, book_id) {
 
     if( sort == "None") {
         if (title.substring(0, 4) == "The ") {
@@ -14,6 +14,67 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     }
 
 
+
+    var star_select = document.createElement("select");
+    star_select.setAttribute("name", "stars");
+    star_select.setAttribute("id", "edit-form-select");
+    star_select.setAttribute("form", "edit-form" + isbn_10);
+
+    var unrated = document.createElement("option");
+    unrated.setAttribute("value", "0");
+    unrated.innerHTML = "unrated";
+
+    var half_star = document.createElement("option");
+    half_star.setAttribute("value", "0.5");
+    half_star.innerHTML = "0.5";
+
+    var one_star = document.createElement("option");
+    one_star.setAttribute("value", "1.0");
+    one_star.innerHTML = "1.0";
+
+    var one_half_star = document.createElement("option");
+    one_half_star.setAttribute("value", "1.5");
+    one_half_star.innerHTML = "1.5";
+
+    var two_star = document.createElement("option");
+    two_star.setAttribute("value", "2.0");
+    two_star.innerHTML = "2.0";
+
+    var two_half_star = document.createElement("option");
+    two_half_star.setAttribute("value", "2.5");
+    two_half_star.innerHTML = "2.5";
+
+    var three_star = document.createElement("option");
+    three_star.setAttribute("value", "3.0");
+    three_star.innerHTML = "3.0";
+
+    var three_half_star = document.createElement("option");
+    three_half_star.setAttribute("value", "3.5");
+    three_half_star.innerHTML = "3.5";
+
+    var four_star = document.createElement("option");
+    four_star.setAttribute("value", "4.0");
+    four_star.innerHTML = "4.0";
+
+    var four_half_star = document.createElement("option");
+    four_half_star.setAttribute("value", "4.5");
+    four_half_star.innerHTML = "4.5";
+
+    var five_star = document.createElement("option");
+    five_star.setAttribute("value", "5.0");
+    five_star.innerHTML = "5.0";
+
+    star_select.appendChild(unrated);
+    star_select.appendChild(half_star);
+    star_select.appendChild(one_star);
+    star_select.appendChild(one_half_star);
+    star_select.appendChild(two_star);
+    star_select.appendChild(two_half_star);
+    star_select.appendChild(three_star);
+    star_select.appendChild(three_half_star);
+    star_select.appendChild(four_star);
+    star_select.appendChild(four_half_star);
+    star_select.appendChild(five_star);
 
     var modal = document.createElement("div");
     modal.setAttribute("id", "edit" + isbn_10);
@@ -179,6 +240,10 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
 
     edit_form.appendChild(document.createElement('br'));
 
+    edit_form.appendChild(star_select);
+
+    edit_form.appendChild(document.createElement('br'));
+
     edit_form.appendChild(edit_button);
 
 
@@ -216,6 +281,9 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
 
     var editID = 'edit' + isbn_10;
 
+    star_select.selectedIndex = getStarIndex(stars);
+
+
     //alert("editID: " + editID);
     document.getElementById(editID).style.display = "block";
     document.getElementById("container").style.height = "calc(100vh - 7em)";
@@ -236,6 +304,7 @@ function logInModal() {
     var login_form = document.createElement("form");
     login_form.setAttribute("action", "/log_in");
     login_form.setAttribute("method", "POST");
+
 
 
     var uname_label = document.createElement("label");
@@ -336,6 +405,9 @@ function addBook(isbn) {
                 } else {
                     //alert('Your query count: ' + book.author);
 
+
+                    alert(book)
+
                     var auth_fname = book.author.split(" ")[0];
                     var auth_lname = book.author.split(" ")[1];
 
@@ -358,6 +430,7 @@ var getJSON = function(url, callback) {
       var status = xhr.status;
       if (status === 200) {
           for (var name in xhr.response) {
+              alert(name)
           }
         callback(null, xhr.response);
       } else {
@@ -395,6 +468,68 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
 
     var newBookID = 'new' + isbn_10;
 
+
+
+    var star_select = document.createElement("select");
+    star_select.setAttribute("name", "stars");
+    star_select.setAttribute("id", "edit-form-select");
+    star_select.setAttribute("form", "new-book-form" + isbn_10);
+
+    var unrated = document.createElement("option");
+    unrated.setAttribute("value", "0");
+    unrated.innerHTML = "unrated";
+
+    var half_star = document.createElement("option");
+    half_star.setAttribute("value", "0.5");
+    half_star.innerHTML = "0.5";
+
+    var one_star = document.createElement("option");
+    one_star.setAttribute("value", "1.0");
+    one_star.innerHTML = "1.0";
+
+    var one_half_star = document.createElement("option");
+    one_half_star.setAttribute("value", "1.5");
+    one_half_star.innerHTML = "1.5";
+
+    var two_star = document.createElement("option");
+    two_star.setAttribute("value", "2.0");
+    two_star.innerHTML = "2.0";
+
+    var two_half_star = document.createElement("option");
+    two_half_star.setAttribute("value", "2.5");
+    two_half_star.innerHTML = "2.5";
+
+    var three_star = document.createElement("option");
+    three_star.setAttribute("value", "3.0");
+    three_star.innerHTML = "3.0";
+
+    var three_half_star = document.createElement("option");
+    three_half_star.setAttribute("value", "3.5");
+    three_half_star.innerHTML = "3.5";
+
+    var four_star = document.createElement("option");
+    four_star.setAttribute("value", "4.0");
+    four_star.innerHTML = "4.0";
+
+    var four_half_star = document.createElement("option");
+    four_half_star.setAttribute("value", "4.5");
+    four_half_star.innerHTML = "4.5";
+
+    var five_star = document.createElement("option");
+    five_star.setAttribute("value", "5.0");
+    five_star.innerHTML = "5.0";
+
+    star_select.appendChild(unrated);
+    star_select.appendChild(half_star);
+    star_select.appendChild(one_star);
+    star_select.appendChild(one_half_star);
+    star_select.appendChild(two_star);
+    star_select.appendChild(two_half_star);
+    star_select.appendChild(three_star);
+    star_select.appendChild(three_half_star);
+    star_select.appendChild(four_star);
+    star_select.appendChild(four_half_star);
+    star_select.appendChild(five_star);
 
     var modal = document.createElement("div");
     modal.setAttribute("id", newBookID);
@@ -573,6 +708,11 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
 
     edit_form.appendChild(document.createElement('br'));
 
+    edit_form.appendChild(star_select);
+
+    edit_form.appendChild(document.createElement('br'));
+
+
     edit_form.appendChild(edit_button);
 
 
@@ -613,3 +753,13 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     document.getElementById("container").style.overflow = "hidden";
 }
 
+function getStarIndex(stars) {
+    star_string = stars.toString();
+    alert(star_string)
+    if (stars == "0.0") {
+        return 0;
+    }
+    if (stars == "5") {
+        return 5;
+    }
+}

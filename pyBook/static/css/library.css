@@ -148,7 +148,9 @@ html {
 }
 
 #header select:hover {
-    background-color: var(--main-bg-hover-color);
+    background-color: var(--site-bg-color);
+    border-color: var(--site-bg-color);
+    color: var(--main-element-color);
     cursor: pointer;
 }
 

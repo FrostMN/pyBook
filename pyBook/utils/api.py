@@ -43,8 +43,8 @@ def getBook(isbn):
             author_lname = str("")
         isbn_10 = isbn_db_json['data'][0]['isbn10']
         isbn_13 = isbn_db_json['data'][0]['isbn13']
-        return str(Book(title, isbn_10, isbn_13, author_fname, author_lname, 0, synopsis, "default.jpg" ))
-    return str(Book('not found', '', '', '', '', 0, '', "default.jpg" ))
+        return str(Book(title, isbn_10, isbn_13, author_fname, author_lname, 0, 0, synopsis, "default.jpg" ))
+    return str(Book('not found', '', '', '', '', 0, 0, '', "default.jpg" ))
 
 
 def getBookImage():

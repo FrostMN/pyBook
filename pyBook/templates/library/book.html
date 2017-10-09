@@ -7,13 +7,7 @@
                     <h2>{{ book.title }}</h2>
                     <h5>by</h5> <h4>{{ book.author_first_name }} {{ book.author_last_name }}</h4>
                     <h3>
-                        <!-- -->
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                        <!-- -->
+                        {{ book.stars|safe }}
                     </h3>
                     <hr>
                     <p>
@@ -29,6 +23,7 @@
                                 '{{ book.author_last_name }}', '{{ book.isbn_10 }}', '{{ book.isbn_13 }}',
                                 '{{ book.image }}', '{{ book.synopsis }}',
                                 '{{ book.sort|replace("'", "\\'")|replace('"', '\\"') }}',
+                                '{{ book.book_stars }}',
                                 '{{ book.id }}')" href="javascript:void(0);">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>

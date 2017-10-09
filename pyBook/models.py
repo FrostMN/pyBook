@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, SmallInteger
+from sqlalchemy import Column, Integer, String, SmallInteger, Float
 from pyBook.database import Base
-import json
+import json, math
 
 
 class User(Base):
@@ -61,12 +61,13 @@ class Book(Base):
     isbn_thirteen = Column(String(13), unique=False)
     author_first_name = Column(String(50))
     author_last_name = Column(String(50))
+    book_stars = Column(Float)
     status = Column(SmallInteger)
     synopsis = Column(String(1000))
     book_image = Column(String(100))
 
     def __init__(self, title=None, isbn_ten=None, isbn_thirteen=None,
-                 author_first_name=None, author_last_name=None, status=0, synopsis=None,
+                 author_first_name=None, author_last_name=None, stars=0, status=0, synopsis=None,
                  image='default.jpg', sort=None, book_id=None):
         self.book_id = book_id
         self.book_title = title
@@ -75,6 +76,7 @@ class Book(Base):
         self.isbn_thirteen = isbn_thirteen
         self.author_first_name = author_first_name
         self.author_last_name = author_last_name
+        self.book_stars = stars
         self.status = status
         self.synopsis = synopsis
         self.book_image = image
@@ -87,7 +89,7 @@ class Book(Base):
 
     def json(self):
         return dict(title=self.title, isbn_10=self.isbn_10, isbn_13=self.isbn_13, author=self.author_first_name +
-             " " + self.author_last_name, status=self.status, synopsis=self.synopsis, image=self.image)
+             " " + self.author_last_name, stars=self.book_stars, status=self.status, synopsis=self.synopsis, image=self.image)
 
     @property
     def image(self):
@@ -112,3 +114,24 @@ class Book(Base):
     @property
     def id(self):
         return str(self.book_id)
+
+    @property
+    def stars(self):
+        star_string = "unrated"
+        half_star = False
+        stars = math.modf(self.book_stars)[1]
+        if stars > 0:
+            if math.modf(self.book_stars)[0] != 0:
+                print(math.modf(self.book_stars)[0])
+                print("half star true")
+                half_star = True
+            star_string = int(stars) * "<i class=\"fa fa-star\" aria-hidden=\"true\"></i>"
+            if half_star:
+                star_string += "<i class=\"fa fa-star-half-o\" aria-hidden=\"true\"></i>"
+                for i in range(0 , 5 - (int(stars) + 1)):
+                    star_string += "<i class =\"fa fa-star-o\" aria-hidden=\"true\"></i>"
+            else:
+                for i in range(0 , 5 - (int(stars))):
+                    star_string += "<i class =\"fa fa-star-o\" aria-hidden=\"true\"></i>"
+        return str(star_string)
+
