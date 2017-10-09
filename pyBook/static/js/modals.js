@@ -612,7 +612,7 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     // create author label
     var author_label = document.createElement("label");
     author_label.setAttribute("for", "author_fname");
-    author_label.innerHTML = "Author: ";
+    author_label.innerHTML = "Author:  ";
 
     // create author first name text box
     var fname_text_box = document.createElement("input");
