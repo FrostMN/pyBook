@@ -203,7 +203,7 @@ def setup():
 
         ###################################################
         # TODO Uncomment following line when in production
-        # file.updateConfig("DEBUG = True", "DEBUG = False")
+        file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return redirect(url_for('library.index'))
 

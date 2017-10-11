@@ -16,7 +16,7 @@
                 </div>
                 <div class="book-foot">
                     <ul>
-
+                        {% if session.admin %}
                         <li class="nav nav-right">
                             <a class="nav" onclick="editModal(
                             '{{ book.title|replace("'", "\\'")|replace('"', '\\"') }}', '{{ book.author_first_name }}',
@@ -29,6 +29,7 @@
                             </a>
                         </li>
                         <li class="nav nav-right"><a class="nav" onclick="lendBook('{{ book.isbn_10 }}')" href="javascript:void(0);"><i class="fa fa-address-card" aria-hidden="true"></i></a></li>
+                        {% endif %}
                         <li class="nav nav-right"><a class="nav" onclick="hideBook('book{{ book.isbn_10 }}')" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
