@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
     <div class="main">
-        {% include "header.html" %}
+        {% with api_key=key %}
+            {% include "header.html" %}
+        {% endwith %}
         <div id="filters" class="filters">
             {% for filter in Filters %}
                 {% include "library/filter.html" %}
@@ -10,7 +12,9 @@
         <div id="container">
             <div id="cards">
                 {% for book in Books %}
-                    {% include "library/book.html" %}
+                    {% with api_key=key, users_json=users, lendee=lendee %}
+                        {% include "library/book.html" %}
+                    {% endwith %}
                 {% endfor %}
             </div>
         </div>

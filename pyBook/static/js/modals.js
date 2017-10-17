@@ -2,7 +2,7 @@
 
 function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, stars, book_id) {
 
-    if( sort == "None") {
+    if( sort === "None") {
         sort = stripLeadingArticle(title);
     }
 
@@ -296,6 +296,7 @@ function logInModal() {
     var modal = document.createElement("div");
     modal.setAttribute("id", "login");
     modal.setAttribute("class", "modal");
+    modal.setAttribute("onclick", "closeModal('login')");
 
 
     var login_modal = document.createElement("div");
@@ -351,15 +352,72 @@ function logInModal() {
 
 }
 
-function lendModal(book) {
-    console.log(book);
+function lendBook(book_id, api_key, users_json) {
+    var users = JSON.parse(users_json);
+
+    var modal = document.createElement("div");
+    modal.setAttribute("id", "lend-book-" + book_id);
+    modal.setAttribute("class", "modal");
+    modal.setAttribute("onclick", "clodeModal(lend-book-" + book_id);
+
+
+    var lend_modal = document.createElement("div");
+    lend_modal.setAttribute("class", "lend-modal");
+
+    var lend_form = document.createElement("form");
+    lend_form.setAttribute("action", "/api/v1/" + api_key + "/books/" + book_id);
+    lend_form.setAttribute("method", "POST");
+
+    var put_input = document.createElement("input");
+    put_input.setAttribute("type", "hidden");
+    put_input.setAttribute("name", "_method");
+    put_input.setAttribute("value", "PUT");
+
+
+    var select_user = document.createElement("select");
+    select_user.setAttribute("name", "user");
+
+    for (var i = 1; i < users.length; i++) {
+        var user = document.createElement("option");
+        var value = users[i].id + ";" + users[i].fname + ";" + users[i].lname;
+        user.setAttribute("value", value);
+        user.innerHTML = users[i].fname + " " + users[i].lname;
+        select_user.appendChild(user);
+    }
+
+    var submit_button = document.createElement("button");
+    submit_button.innerHTML = "lend";
+
+    modal.appendChild(lend_modal);
+    lend_modal.appendChild(lend_form);
+    lend_form.appendChild(put_input);
+    lend_form.appendChild(select_user);
+    lend_form.appendChild(submit_button);
+
+    document.getElementById("container").appendChild(modal);
+
+    document.getElementById("lend-book-" + book_id).style.display = "block";
+    document.getElementById("container").style.height = "calc(100vh - 7em)";
+    document.getElementById("container").style.overflow = "hidden";
 }
 
-function addBookModal() {
+function returnBook(book_id, api_key, lendee) {
+    alert("book_id: " + book_id + " api_key: " + api_key + " lendee: " + lendee);
+
+
+
+
+}
+
+function addBookModal(api_key) {
+
+    // alert(api_key);
 
     var modal = document.createElement("div");
     modal.setAttribute("id", "add-book");
     modal.setAttribute("class", "modal");
+    modal.setAttribute("onclick", "closeModal(add-book)");
+
 
 
     var add_book_modal = document.createElement("div");
@@ -372,11 +430,11 @@ function addBookModal() {
     var isbn_box = document.createElement("input");
     isbn_box.setAttribute("name", "isbn");
     isbn_box.setAttribute("type", "text");
-    isbn_box.setAttribute("onkeydown", "addBook(document.getElementById('add-by-isbn').value, event)");
+    isbn_box.setAttribute("onkeydown", "addBook('" + api_key + "', document.getElementById('add-by-isbn').value, event)");
     isbn_box.setAttribute("id", "add-by-isbn");
 
     var isbn_button = document.createElement("button");
-    isbn_button.setAttribute("onclick", "addBook(document.getElementById('add-by-isbn').value, event)");
+    isbn_button.setAttribute("onclick", "addBook('" + api_key + "', document.getElementById('add-by-isbn').value, event)");
     isbn_button.innerHTML = "Search";
 
     add_book_modal.appendChild(isbn_label);
@@ -396,10 +454,10 @@ function addBookModal() {
 // I found the getJSON and parts of the addBook function from stack overflow           //
 // https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript //
 
-function addBook(isbn) {
-    if ((event.keyCode == 13) || (event.type == "click")) {
-        if (isbn != "") {    // TODO add an isbn validation method somewhere
-            getJSON("/api/" + isbn, function (err, book) {
+function addBook(api_key, isbn) {
+    if ((event.keyCode === 13) || (event.type === "click")) {
+        if (isbn !== "") {    // TODO add an isbn validation method somewhere
+            getJSON("/api/add/" + api_key + "/" + isbn, function (err, book) {
                 //alert("http://127.0.0.1:5000/api/" + isbn);
                 if (err !== null) {
                     alert('Something went wrong: ' + err);
@@ -426,8 +484,8 @@ var getJSON = function(url, callback) {
     xhr.onload = function() {
       var status = xhr.status;
       if (status === 200) {
-          for (var name in xhr.response) {
-          }
+          // for (var name in xhr.response) {
+          // }
         callback(null, xhr.response);
       } else {
         callback(status, xhr.response);
@@ -440,7 +498,7 @@ var getJSON = function(url, callback) {
 
 function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, book_id) {
 
-    if( sort == "None") {
+    if( sort === "None") {
         sort = stripLeadingArticle(title);
     }
 
@@ -449,7 +507,7 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
 
     book_img = api_img_url;
 
-    if (title == 'not found') {
+    if (title === 'not found') {
         book_img = '/static/img/covers/default.jpg';
         file_name = "default.jpg";
     }
@@ -739,39 +797,39 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     document.getElementById("container").style.overflow = "hidden";
 }
 
+// converts star number in book object to html select index
 function getStarIndex(stars) {
-    star_string = stars.toString();
-    if (stars == "0.0") {
+    if (stars === "0.0") {
         return 0;
     }
-    if (stars == "0.5") {
+    if (stars === "0.5") {
         return 1;
     }
-    if (stars == "1.0") {
+    if (stars === "1.0") {
         return 2;
     }
-    if (stars == "1.5") {
+    if (stars === "1.5") {
         return 3;
     }
-    if (stars == "2.0") {
+    if (stars === "2.0") {
         return 4;
     }
-    if (stars == "2.5") {
+    if (stars === "2.5") {
         return 5;
     }
-    if (stars == "3.0") {
+    if (stars === "3.0") {
         return 6;
     }
-    if (stars == "3.5") {
+    if (stars === "3.5") {
         return 7;
     }
-    if (stars == "4.0") {
+    if (stars === "4.0") {
         return 8;
     }
-    if (stars == "4.5") {
+    if (stars === "4.5") {
         return 9;
     }
-    if (stars == "5.0") {
+    if (stars === "5.0") {
         return 10;
     }
 }
@@ -819,14 +877,15 @@ function deleteModal(isbn_10, book_id, title) {
 }
 
 function stripLeadingArticle(title) {
-    if (title.substring(0, 4) == "The ") {
+    var stripped = "";
+    if (title.substring(0, 4) === "The ") {
         //alert(title.substring(0, 3));
         stripped = title.substring(4);
-    } else if (title.substring(0, 2) == "A ") {
+    } else if (title.substring(0, 2) === "A ") {
         stripped = title.substring(2);
-    } else if (title.substring(0, 4) == "the ") {
+    } else if (title.substring(0, 4) === "the ") {
         stripped = title.substring(4);
-    } else if (title.substring(0, 2) == "a ") {
+    } else if (title.substring(0, 2) === "a ") {
         stripped = title.substring(2);
     } else {
         stripped = title;
@@ -839,3 +898,17 @@ function escapeQuotes(string) {
     escaped_string = escaped_string.replace('"', "&quot;");
     return escaped_string;
 }
+//
+// function closeModal() {
+//
+// }
+
+
+function closeModal(obj) {
+    var closeID = obj;
+    var modal = document.getElementById(closeID);
+    document.getElementById("container").style.removeProperty("height");
+    document.getElementById("container").style.removeProperty("overflow");
+    modal.style.display = "none";
+}
+

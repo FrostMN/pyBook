@@ -1,4 +1,5 @@
-from pyBook.models import Book
+from pyBook.models import Book, User
+import pyBook.utils.secrets as secrets
 
 crypt_syn = "In 1942, Lawrence Pritchard Waterhouse, a young United States Navy code breaker and " \
             "mathematical genius, is assigned to the newly formed joint British and American Detachment " \
@@ -82,3 +83,7 @@ system_syn = "Daniel Waterhouse returns to England from his \"Technologickal Col
 system = Book('The System of the World', '0060523875', '9780060523879', 'Neal', 'Stephenson', 4.5, 0,
               system_syn, 'syste0060523875.jpg', 'system of the World')
 test_books = [crypt, stone, ream, strange, chamber, color, quick, conf, system]
+
+guest_salt = secrets.generate_salt()
+
+test_user = User("guest", "guest@fakeurl.com", 0, "Guest", "User", guest_salt, secrets.hash_password("guest", guest_salt), secrets.generate_salt(15) )

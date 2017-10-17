@@ -23,11 +23,11 @@ function editBook(obj) {
     modal.style.display = "block";
 }
 
-function lendBook(obj) {
-    var lendID = 'lend' + obj;
-    var modal = document.getElementById(lendID);
-    modal.style.display = "block";
-}
+// function lendBook(obj) {
+//     var lendID = 'lend' + obj;
+//     var modal = document.getElementById(lendID);
+//     modal.style.display = "block";
+// }
 
 /*
 
@@ -38,11 +38,12 @@ function hideBook(obj) {
 }
 
 */
-
-function closeModal(obj) {
-    var closeID = obj;
-    var modal = document.getElementById(closeID);
-    document.getElementById("container").style.removeProperty("height");
-    document.getElementById("container").style.removeProperty("overflow");
-    modal.style.display = "none";
-}
+//
+// function closeModal(obj) {
+//     var closeID = obj;
+//     var modal = document.getElementById(closeID);
+//     document.getElementById("container").style.removeProperty("height");
+//     document.getElementById("container").style.removeProperty("overflow");
+//     modal.style.display = "none";
+// }
+//

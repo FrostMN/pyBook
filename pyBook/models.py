@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, SmallInteger, Float
 from pyBook.database import Base
-import json, math
+import json
+import math
 
 
 class User(Base):
@@ -13,9 +14,10 @@ class User(Base):
     last_name = Column(String(50))
     pw_salt = Column(String(64))
     pw_hash = Column(String(64))
+    api_key = Column(String(15), unique=True)
 
     def __init__(self, user_name=None, email=None, admin=0, first_name=None, last_name=None,
-                 pw_salt=None, pw_hash=None, user_id=None):
+                 pw_salt=None, pw_hash=None, key=None, user_id=None):
         self.user_id = user_id
         self.email = email
         self.user_name = user_name
@@ -24,9 +26,11 @@ class User(Base):
         self.last_name = last_name
         self.pw_salt = pw_salt
         self.pw_hash = pw_hash
+        self.api_key = key
 
     def json(self):
-        return dict(id=self.user_id, email=self.email, uname=self.user_name, name=self.first_name + " " + self.last_name,
+        return dict(id=self.user_id, email=self.email, uname=self.user_name,
+                    name=self.first_name + " " + self.last_name,
                     salt=self.pw_salt, hash=self.pw_hash)
 
     def __repr__(self):
@@ -51,6 +55,14 @@ class User(Base):
     def hash(self):
         return self.pw_hash
 
+    @property
+    def get_key(self):
+        return self.api_key
+
+    @property
+    def get_id(self):
+        return self.user_id
+
 
 class Book(Base):
     __tablename__ = 'books'
@@ -64,11 +76,13 @@ class Book(Base):
     book_stars = Column(Float)
     status = Column(SmallInteger)
     synopsis = Column(String(1000))
+    lent_to_user_id = Column(Integer)
+    lent_to_user_name = Column(String(200))
     book_image = Column(String(100))
 
     def __init__(self, title=None, isbn_ten=None, isbn_thirteen=None,
                  author_first_name=None, author_last_name=None, stars=0, status=0, synopsis=None,
-                 image='default.jpg', sort=None, book_id=None):
+                 image='default.jpg', sort=None, lendee_fname=None, lendee_lname=None, book_id=None):
         self.book_id = book_id
         self.book_title = title
         self.book_sort = str(sort).lower()
@@ -78,6 +92,10 @@ class Book(Base):
         self.author_last_name = author_last_name
         self.book_stars = stars
         self.status = status
+        if lendee_fname is not None or lendee_lname is not None:
+            self.lent_to_user_name = lendee_fname + " " + lendee_lname
+        else:
+            self.lent_to_user_id = None
         self.synopsis = synopsis
         self.book_image = image
 
@@ -88,8 +106,20 @@ class Book(Base):
         return json.dumps(self.json(), indent=4, sort_keys=True)
 
     def json(self):
-        return dict(title=self.title, isbn_10=self.isbn_10, isbn_13=self.isbn_13, author=self.author_first_name +
-             " " + self.author_last_name, stars=self.book_stars, status=self.status, synopsis=self.synopsis, image=self.image)
+        return dict(id=self.book_id, title=self.title, isbn_10=self.isbn_10, isbn_13=self.isbn_13,
+                    author=self.author_first_name + " " + self.author_last_name, stars=self.book_stars,
+                    status=self.status, lendee=self.lendee, synopsis=self.synopsis, image=self.image)
+
+    def lend_to(self, id, name):
+        self.status = 1
+        self.lent_to_user_id = id
+        self.lent_to_user_name = name
+
+    def return_book(self):
+        self.status = 0
+        self.lent_to_user_id = None
+        self.lent_to_user_name = None
+
 
     @property
     def image(self):
@@ -121,8 +151,6 @@ class Book(Base):
         half_star = False
         stars = math.modf(self.book_stars)[1]
         if math.modf(self.book_stars)[0] != 0:
-#            print(math.modf(self.book_stars)[0])
-#            print("half star true")
             half_star = True
         if stars > 0:
             star_string = int(stars) * "<i class=\"fa fa-star\" aria-hidden=\"true\"></i>"
@@ -132,11 +160,26 @@ class Book(Base):
             else:
                 star_string += "<i class=\"fa fa-star-half-o\" aria-hidden=\"true\"></i>"
             if star_string != "unrated":
-                for i in range(0 , 5 - (int(stars) + 1)):
+                for i in range(0, 5 - (int(stars) + 1)):
                     star_string += "<i class =\"fa fa-star-o\" aria-hidden=\"true\"></i>"
         else:
             if star_string != "unrated":
-                for i in range(0 , 5 - (int(stars))):
+                for i in range(0, 5 - (int(stars))):
                     star_string += "<i class =\"fa fa-star-o\" aria-hidden=\"true\"></i>"
         return str(star_string)
+
+    @property
+    def lendee(self):
+        return str(self.lent_to_user_name)
+
+    @property
+    def lendee_id(self):
+        return str(self.lent_to_user_id)
+
+    @property
+    def is_lent(self):
+        if self.status == 1:
+            return True
+        else:
+            return False
 

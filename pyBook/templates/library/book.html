@@ -28,7 +28,13 @@
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
                         </li>
-                        <li class="nav nav-right"><a class="nav" onclick="lendBook('{{ book.isbn_10 }}')" href="javascript:void(0);"><i class="fa fa-address-card" aria-hidden="true"></i></a></li>
+                            {% if user_count > 1 %}
+                                {% if book.is_lent %}
+                                    <li class="nav nav-right"><a class="nav" onclick="returnBook('{{ book.book_id }}', '{{ api_key }}', '{{ lendee }}')" href="javascript:void(0);"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+                                {% else %}
+                                    <li class="nav nav-right"><a class="nav" onclick="lendBook('{{ book.book_id }}', '{{ api_key }}', '{{ users_json }}')" href="javascript:void(0);"><i class="fa fa-address-card" aria-hidden="true"></i></a></li>
+                                {% endif %}
+                            {% endif %}
                         {% endif %}
                         <li class="nav nav-right"><a class="nav" onclick="hideBook('book{{ book.isbn_10 }}')" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></li>
                     </ul>

@@ -1,14 +1,16 @@
 from pyBook import app
 import requests, json
-from pyBook.models import Book
+from pyBook.models import Book, User
 
 # get api info from config file
 key = app.config['ISBNDB_API_KEY']
 isbn_db_uri = app.config['ISBNDB_URL'].replace("{{KEY}}", key)
 
-# keyless api info below
+
+# key-less api info below
 open_library_uri = 'https://openlibrary.org/api/books?bibkeys=ISBN:{{isbn}}&jscmd=data&format=json'
 google_apis_uri = "https://www.googleapis.com/books/v1/volumes/"
+
 
 def getBook(isbn):
     google_key = ""
@@ -49,3 +51,33 @@ def getBook(isbn):
 
 def getBookImage():
     return ""
+
+
+def lend():
+    return None
+
+
+def keyExists(key):
+    count = User.query.filter_by(api_key=key).count()
+    if count == 1:
+        return True
+    else:
+        return False
+
+
+def bookIdExists(book_id):
+    count = Book.query.filter_by(book_id=book_id).count()
+    if count == 1:
+        return True
+    else:
+        return False
+
+
+def getBookCount(isbn):
+    if len(isbn) == 10:
+        print("in get book count 10")
+        print()
+        return Book.query.filter_by(isbn_ten=isbn).count()
+    else:
+        return Book.query.filter_by(isbn_thirteen=isbn).count()
+

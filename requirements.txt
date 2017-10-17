@@ -3,3 +3,4 @@ bcrypt
 sqlalchemy
 requests
 werkzeug
+Flask-API

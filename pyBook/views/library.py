@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session
+from flask import Blueprint, render_template, redirect, url_for, request, session, abort
 from pyBook.models import Book, User
 from pyBook.database import init_db, db_session
 import pyBook
@@ -21,13 +21,29 @@ def index():
         init_db()
 
     users = User.query.all()
+    print(users)
     if len(users) == 0:
-        print(url_for('library.setup'))
         return redirect(url_for('library.setup'))
 
     books = db_session.query(Book).order_by("book_sort").all()
+    key = "test"
+    if session.get('key'):
+        key = session['key']
 
-    return render_template('library/index.html', Books=books)
+    users_json = "[ "
+    for u in users:
+        print(u.get_id)
+        users_json += '{ "id": "' + str(u.get_id) + '", "fname": "' + u.first_name + '", "lname": "' + u.last_name + '" }, '
+    users_json = users_json[0:-2] + " ]"
+
+    print(users_json)
+
+    return render_template('library/index.html', key=key, Books=books, user_count=len(users), users=users_json)
+
+
+@mod.route('/404')
+def not_found():
+    return abort(404)
 
 
 # TODO need to figure out flash messages
@@ -51,6 +67,7 @@ def log_in():
             usr = secrets.get_user(uname)
             session['user'] = usr.user
             session['admin'] = usr.is_admin
+            session['key'] = usr.get_key
             return redirect(url_for('library.index'))
     else:
         return redirect(url_for('library.index'))
@@ -107,8 +124,8 @@ def lend():
 # test data resides in pyBook.static.temp.test_data.py
 # that folder and this decorator can be deleted when moved to
 # production
-@mod.route('/add_test', methods=['GET', 'POST'])
-def add_test():
+@mod.route('/add_test_book', methods=['GET', 'POST'])
+def add_test_books():
     if len(Book.query.all()) == 0:
         # loads test data from file
         from pyBook.static.temp.test_data import test_books
@@ -116,6 +133,16 @@ def add_test():
         db_session.commit()
         return redirect(url_for('library.index'))
     return redirect(url_for('library.index'))
+
+@mod.route('/add_test_users', methods=['GET', 'POST'])
+def add_test_users():
+    if len(User.query.all()) == 0:
+        from pyBook.static.temp.test_data import test_user
+        db_session.add(test_user)
+        db_session.commit()
+        return redirect(url_for('library.index'))
+    return redirect(url_for('library.index'))
+
 
 
 # add book to db
@@ -193,7 +220,9 @@ def setup():
         isbn_db_key = request.form['isbndb']
 
         salt = secrets.generate_salt()
-        user = User(user_name, email, 1, first_name, last_name, salt, secrets.hash_password(password, salt))
+        api_key = secrets.generate_salt(15)
+
+        user = User(user_name, email, 1, first_name, last_name, salt, secrets.hash_password(password, salt), api_key)
 
         db_session.add(user)
         db_session.commit()
@@ -203,13 +232,26 @@ def setup():
 
         ###################################################
         # TODO Uncomment following line when in production
-        file.updateConfig("DEBUG = True", "DEBUG = False")
+        # file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return redirect(url_for('library.index'))
 
 
 # TODO finish fleshing out api
 # TODO maybe move it into its own view/bookmark
-@mod.route('/api/<isbn>')
-def api_new(isbn):
-        return api.getBook(isbn)
+@mod.route('/api/add/<key>/<isbn>')
+def api_new(key, isbn):
+    return api.getBook(isbn)
+
+#
+# @mod.route('/api/lend/<key>/isbn=<isbn>&to=<uname>', methods=['GET', 'POST'])
+# def api_lend(key, isbn, uname):
+#     api_user = db_session.query(pyBook.models.User).filter_by(api_key=key).first()
+#     lendee = db_session.query(pyBook.models.User).filter_by(user_name=uname).first()
+#     if api_user.is_admin:
+#         print(isbn)
+#         print(uname)
+#         print(lendee.user)
+#         user = str(api_user.user)
+#     return user
+#

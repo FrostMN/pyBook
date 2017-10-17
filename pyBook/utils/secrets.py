@@ -2,10 +2,13 @@ import bcrypt, hashlib
 from pyBook.database import init_db, db_session
 import pyBook.models
 
-# generates 64 random characters to use as salt
-def generate_salt():
-    salt = bcrypt.gensalt()
-    return hashlib.sha3_256(str(salt).encode('utf-8')).hexdigest()
+
+# generates random characters to use as salt default is 64
+def generate_salt(length=64):
+    salt = ""
+    while len(salt) < length:
+        salt += hashlib.sha3_256(str(bcrypt.gensalt()).encode('utf-8')).hexdigest()
+    return salt[0:length]
 
 
 # hashes password with salt
@@ -18,10 +21,8 @@ def check_hash(user, password):
     usr = db_session.query(pyBook.models.User).filter_by(user_name=user).first()
     salt = usr.salt
     if hash_password(password, salt) == usr.hash:
-        #print('Hash matches.')
         return True
     else:
-        #print('Hash does not match.')
         return False
 
 
