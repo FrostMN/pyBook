@@ -21,7 +21,7 @@ def index():
         init_db()
 
     users = User.query.all()
-    print(users)
+    # print(users)
     if len(users) == 0:
         return redirect(url_for('library.setup'))
 
@@ -36,7 +36,7 @@ def index():
         users_json += '{ "id": "' + str(u.get_id) + '", "fname": "' + u.first_name + '", "lname": "' + u.last_name + '" }, '
     users_json = users_json[0:-2] + " ]"
 
-    print(users_json)
+    # print(users_json)
 
     return render_template('library/index.html', key=key, Books=books, user_count=len(users), users=users_json)
 
@@ -56,11 +56,11 @@ def log_in():
 
         # Tests if the username is in the db
         if not secrets.user_exists(uname):
-            print("bad username")
+            # print("bad username")
             return redirect(url_for('library.index'))
         # Tests if the password mateches
         elif not secrets.check_hash(uname, pword):
-            print("bad password")
+            # print("bad password")
             return redirect(url_for('library.index'))
         else:
             session['logged_in'] = True
@@ -124,7 +124,7 @@ def lend():
 # test data resides in pyBook.static.temp.test_data.py
 # that folder and this decorator can be deleted when moved to
 # production
-@mod.route('/add_test_book', methods=['GET', 'POST'])
+@mod.route('/add_test_books', methods=['GET', 'POST'])
 def add_test_books():
     if len(Book.query.all()) == 0:
         # loads test data from file
@@ -134,9 +134,11 @@ def add_test_books():
         return redirect(url_for('library.index'))
     return redirect(url_for('library.index'))
 
+
 @mod.route('/add_test_users', methods=['GET', 'POST'])
 def add_test_users():
-    if len(User.query.all()) == 0:
+    if len(User.query.all()) == 1:
+        # print("in add test users")
         from pyBook.static.temp.test_data import test_user
         db_session.add(test_user)
         db_session.commit()
@@ -156,7 +158,7 @@ def add():
             author_first_name = request.form['author_fname']
             author_last_name = request.form['author_lname']
             synopsis = request.form['synopsis']
-            print(synopsis)
+            # print(synopsis)
             stars = request.form['stars']
             sort = request.form['sort']
 
@@ -230,9 +232,9 @@ def setup():
         file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
         file.updateConfig("isbndb_Key", isbn_db_key)
 
-        ###################################################
+        ##################################################
         # TODO Uncomment following line when in production
-        # file.updateConfig("DEBUG = True", "DEBUG = False")
+        file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return redirect(url_for('library.index'))
 

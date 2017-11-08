@@ -2,9 +2,9 @@ import os
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = True
+DEBUG = False
 
-SECRET_KEY = '0adc8788b500980ddaef0f93c1bf69e5e94c3f173724a8fc9c1f46b7747b1af101855f76eb0cd1f34f488c51ae63e16f471c216b5857c52836f995aa56e29934'
+SECRET_KEY = '433f87e131e5fd51657ba2ea4e94c11f9eb4f8b693acd4a0f3035ab02eeb3b77d554639ebd4e626671a7292f6370f01e7ad3bd5a9e45b0770b6a669b6ba41e74'
 DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'pyBook.db')
 DATABASE_CONNECT_OPTIONS = {}
 

@@ -17,7 +17,7 @@ stone_syn = "The most evil and powerful dark wizard in history, Lord Voldemort, 
             "son, Dudley."
 
 stone = Book('Harry Potter and the Philosopher\'s Stone', '0747532699', '9780747532699', 'J.K.', 'Rowling',
-             4, 0, stone_syn, 'harry0747532699.jpg', 'harry')
+             4, 0, stone_syn, 'harry0747532699.jpg', 'harry potter and the philosopher')
 
 chamber_syn = "In 1992, while the Dursley family—his uncle Vernon, aunt Petunia, and cousin Dudley—entertain " \
               "a potential client for Vernon’s drill-manufacturing company Grunnings, Harry Potter " \
@@ -28,7 +28,7 @@ chamber_syn = "In 1992, while the Dursley family—his uncle Vernon, aunt Petuni
               "written to him, even for his birthday, on which the novel opens."
 
 chamber = Book('Harry Potter and the Chamber of Secrets', '0747538492', '9780747538493', 'J.K.', 'Rowling',
-               4, 0, chamber_syn, 'harry0747538492.jpg', 'harry')
+               4, 0, chamber_syn, 'harry0747538492.jpg', 'harry potter and the chamber')
 
 quick_syn = "The first book is a series of flashbacks from 1713 to the earlier life of Daniel Waterhouse. " \
             "It begins as Enoch Root arrives in Boston in October 1713 to deliver a letter to Daniel " \
