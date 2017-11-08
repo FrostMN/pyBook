@@ -3,4 +3,5 @@ bcrypt
 sqlalchemy
 requests
 werkzeug
+gunicorn
 Flask-API
