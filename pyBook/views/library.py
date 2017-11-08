@@ -146,7 +146,6 @@ def add_test_users():
     return redirect(url_for('library.index'))
 
 
-
 # add book to db
 @mod.route('/add', methods=['GET', 'POST'])
 def add():
@@ -158,7 +157,6 @@ def add():
             author_first_name = request.form['author_fname']
             author_last_name = request.form['author_lname']
             synopsis = request.form['synopsis']
-            # print(synopsis)
             stars = request.form['stars']
             sort = request.form['sort']
 
@@ -229,7 +227,7 @@ def setup():
         db_session.add(user)
         db_session.commit()
 
-        file.updateConfig("testkey", secrets.generate_salt() + secrets.generate_salt())
+        file.updateConfig("secret_key", secrets.generate_salt() + secrets.generate_salt())
         file.updateConfig("isbndb_Key", isbn_db_key)
 
         ##################################################
