@@ -1,6 +1,8 @@
 
 
-function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, stars, book_id) {
+function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, sort, stars, book_id,
+                   lang_title, lang_sort, lang_author, lang_synopsis, lang_delete, lang_save, lang_unrated,
+                   lang_confirm, lang_cancel) {
 
     if( sort === "None") {
         sort = stripLeadingArticle(title);
@@ -9,6 +11,8 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     var escaped_title = escapeQuotes(title);
     var escaped_synopsis = escapeQuotes(synopsis);
 
+    var escaped_lang_confirm = escapeQuotes(lang_confirm)
+
     var star_select = document.createElement("select");
     star_select.setAttribute("name", "stars");
     star_select.setAttribute("id", "edit-form-select");
@@ -16,7 +20,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
 
     var unrated = document.createElement("option");
     unrated.setAttribute("value", "0");
-    unrated.innerHTML = "unrated";
+    unrated.innerHTML = lang_unrated;
 
     var half_star = document.createElement("option");
     half_star.setAttribute("value", "0.5");
@@ -115,7 +119,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     // create title label
     var title_label = document.createElement("label");
     title_label.setAttribute("for", "title");
-    title_label.innerHTML = "Title: ";
+    title_label.innerHTML = lang_title + ": ";
 
     // create title text box
     var title_text_box = document.createElement("input");
@@ -128,7 +132,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     // create sort label
     var sort_label = document.createElement("label");
     sort_label.setAttribute("for", "title");
-    sort_label.innerHTML = "Sort: ";
+    sort_label.innerHTML = lang_sort + ": ";
 
     // create sort text box
     var sort_text_box = document.createElement("input");
@@ -140,7 +144,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     // create author label
     var author_label = document.createElement("label");
     author_label.setAttribute("for", "author_fname");
-    author_label.innerHTML = "Author: ";
+    author_label.innerHTML = lang_author + ": ";
 
     // create author first name text box
     var fname_text_box = document.createElement("input");
@@ -185,18 +189,19 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     // create submit button
     var edit_button = document.createElement("button");
     edit_button.setAttribute("type", "submit");
-    edit_button.innerHTML = "Save";
+    edit_button.innerHTML = lang_save;
 
     // create delete button
     var delete_button = document.createElement("button");
-    delete_button.setAttribute("onclick", "deleteModal('" + isbn_10 + "', '" + book_id + "', '" + escaped_title +"')");
+    delete_button.setAttribute("onclick", "deleteModal('" + isbn_10 + "', '" + book_id + "', '" + escaped_title +"', '" +
+        escaped_lang_confirm +  "', '" + lang_cancel + "', '" + lang_delete + "')");
     delete_button.setAttribute("type", "button");
-    delete_button.innerHTML = "Delete";
+    delete_button.innerHTML = lang_delete;
 
-    // create isbn_13 label
+    // create synopsis label
     var synopsis_label = document.createElement("label");
     synopsis_label.setAttribute("for", "synopsis");
-    synopsis_label.innerHTML = "Synopsis: ";
+    synopsis_label.innerHTML = lang_synopsis + ": ";
 
 
     var text_area = document.createElement("textarea");
@@ -834,16 +839,20 @@ function getStarIndex(stars) {
     }
 }
 
-function deleteModal(isbn_10, book_id, title) {
+function deleteModal(isbn_10, book_id, title, lang_confirm, lang_cancel, lang_delete) {
     // create book_id hidden input
+
+    lang_confirm = lang_confirm.replace("{{ book }}", title);
+
+
     var book_id_input = document.createElement("input");
     book_id_input.setAttribute("type", "hidden");
     book_id_input.setAttribute("name", "book_id");
     book_id_input.setAttribute("value", book_id);
 
     var delete_modal = document.createElement('div');
-    delete_modal.setAttribute("id", "delete" + isbn_10 );
     delete_modal.setAttribute("class", "delete-modal");
+    delete_modal.setAttribute("id", "delete" + isbn_10 );
 
     var delete_form = document.createElement('form');
     delete_form.setAttribute("action", "/delete");
@@ -851,25 +860,25 @@ function deleteModal(isbn_10, book_id, title) {
 
     var delete_button = document.createElement("button");
     delete_button.setAttribute("type", "submit");
-    delete_button.innerHTML = "Delete";
+    delete_button.innerHTML = lang_delete;
 
     var cancel_button = document.createElement("button");
     cancel_button.setAttribute("type", "button");
     cancel_button.setAttribute("onclick", "closeModal('delete" + isbn_10 + "')");
-    cancel_button.innerHTML = "Cancel";
+    cancel_button.innerHTML = lang_cancel;
 
     var delete_warning = document.createElement('h2');
-    delete_warning.innerHTML = "Are you sure you want to delete:?";
+    delete_warning.innerHTML = lang_confirm;
 
-    var title_header = document.createElement('h3');
-    title_header.innerHTML = title;
+    // var title_header = document.createElement('h3');
+    // title_header.innerHTML = title;
 
     delete_form.appendChild(book_id_input);
     delete_form.appendChild(cancel_button);
     delete_form.appendChild(delete_button);
 
     delete_modal.appendChild(delete_warning);
-    delete_modal.appendChild(title_header);
+    // delete_modal.appendChild(title_header);
     delete_modal.appendChild(delete_form);
 
     var outer_modal = document.getElementById('edit' + isbn_10);

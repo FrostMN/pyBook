@@ -19,11 +19,11 @@
 
                 <li class="left">
                     <select class="select" id="search-type">
-                        <option value="author"><span class="select">Author</span><i class="fa fa-caret-down"></i></option>
-                        <option value="title">Title<i class="fa fa-caret-down"></i></option>
+                        <option value="author"><span class="select">{{ lang.author }}</span><i class="fa fa-caret-down"></i></option>
+                        <option value="title">{{ lang.title }}<i class="fa fa-caret-down"></i></option>
                         <option value="isbn10">ISBN 10<i class="fa fa-caret-down"></i></option>
                         <option value="1sbn13">ISBN 13<i class="fa fa-caret-down"></i></option>
-                        <option value="all">All<i class="fa fa-caret-down"></i></option>
+                        <option value="all">{{ lang.all }}<i class="fa fa-caret-down"></i></option>
                     </select>
                 </li>
                 <li class="left search">
@@ -38,7 +38,7 @@
 
                 {% if not session.logged_in %}
                 <div class="dropdown" style="float:right;">
-                    <button class="dropbtn" onclick="logInModal()" href="javascript:void(0);"><h3><i class="fa fa-user-o" aria-hidden="true"></i> login</h3></button>
+                    <button class="dropbtn" onclick="logInModal()" href="javascript:void(0);"><h3><i class="fa fa-user-o" aria-hidden="true"></i> {{ lang.login }}</h3></button>
                 </div>
                     <!--
                     <li class="right button">
@@ -53,13 +53,13 @@
                     <button class="dropbtn"><h3>{{ session.user }} <i class="fa fa-caret-down" aria-hidden="true"></i></h3></button>
                     <div class="dropdown-content">
                     {% if request.path  != "/" %}
-                        <a href="{{ url_for("library.index") }}">Home</a>
+                        <a href="{{ url_for("library.index") }}">{{ lang.home }}</a>
                     {% endif %}
-                        <a href="{{ url_for("user.index") }}">User</a>
+                        <a href="{{ url_for("user.index") }}">{{ lang.user }}</a>
                     {% if session.admin %}
-                        <a href="{{ url_for("admin.index") }}">Admin</a>
+                        <a href="{{ url_for("admin.index") }}">{{ lang.admin }}</a>
                     {% endif %}
-                        <a href="{{ url_for("library.log_out") }}">Logout</a>
+                        <a href="{{ url_for("library.log_out") }}">{{ lang.logout }}</a>
                     </div>
                 </div>
                 {% endif %}

@@ -24,7 +24,16 @@
                                 '{{ book.image }}', '{{ book.synopsis|replace("'", "\\'")|replace('"', '\\"') }}',
                                 '{{ book.sort|replace("'", "\\'")|replace('"', '\\"') }}',
                                 '{{ book.book_stars }}',
-                                '{{ book.id }}')" href="javascript:void(0);">
+                                '{{ book.id }}',
+                                '{{ lang.title }}',
+                                '{{ lang.sort }}',
+                                '{{ lang.author }}',
+                                '{{ lang.synopsis }}',
+                                '{{ lang.delete }}',
+                                '{{ lang.save }}',
+                                '{{ lang.unrated }}',
+                                '{{ lang.confirm_delete }}',
+                                '{{ lang.cancel }}')" href="javascript:void(0);">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
                         </li>

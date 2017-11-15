@@ -86,4 +86,4 @@ test_books = [crypt, stone, ream, strange, chamber, color, quick, conf, system]
 
 guest_salt = secrets.generate_salt()
 
-test_user = User("guest", "guest@fakeurl.com", 0, "Guest", "User", guest_salt, secrets.hash_password("guest", guest_salt), secrets.generate_salt(15) )
+test_user = User("guest", "guest@fakeurl.com", 0, "Guest", "User", "fre", guest_salt, secrets.hash_password("guest", guest_salt), secrets.generate_salt(15) )

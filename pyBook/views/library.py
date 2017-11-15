@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, abort
 from pyBook.models import Book, User
 from pyBook.database import init_db, db_session
+from local import lang as local
+from local import set_language
 import pyBook
 import os
 import pyBook.utils.api as api
@@ -13,7 +15,7 @@ mod = Blueprint('library', __name__)
 
 @mod.route('/')
 def index():
-    print(os.path.join(pyBook.app.root_path, "pyBook.db"))
+    # print(os.path.join(pyBook.app.root_path, "pyBook.db"))
     if file.exists(os.path.join(pyBook.app.root_path, "pyBook.db")):
         print('db exists')
     else:
@@ -21,7 +23,7 @@ def index():
         init_db()
 
     users = User.query.all()
-    # print(users)
+
     if len(users) == 0:
         return redirect(url_for('library.setup'))
 
@@ -32,13 +34,13 @@ def index():
 
     users_json = "[ "
     for u in users:
-        print(u.get_id)
+        # print(u.get_id)
         users_json += '{ "id": "' + str(u.get_id) + '", "fname": "' + u.first_name + '", "lname": "' + u.last_name + '" }, '
     users_json = users_json[0:-2] + " ]"
 
     # print(users_json)
-
-    return render_template('library/index.html', key=key, Books=books, user_count=len(users), users=users_json)
+    lang = set_language()
+    return render_template('library/index.html', key=key, Books=books, user_count=len(users), users=users_json, lang=local[lang])
 
 
 @mod.route('/404')
@@ -68,6 +70,7 @@ def log_in():
             session['user'] = usr.user
             session['admin'] = usr.is_admin
             session['key'] = usr.get_key
+            session['lang'] = usr.lang
             return redirect(url_for('library.index'))
     else:
         return redirect(url_for('library.index'))
@@ -218,11 +221,12 @@ def setup():
         user_name = request.form['uname']
         password = request.form['pword']
         isbn_db_key = request.form['isbndb']
+        language = request.form['language']
 
         salt = secrets.generate_salt()
         api_key = secrets.generate_salt(15)
 
-        user = User(user_name, email, 1, first_name, last_name, salt, secrets.hash_password(password, salt), api_key)
+        user = User(user_name, email, 1, first_name, last_name, language, salt, secrets.hash_password(password, salt), api_key)
 
         db_session.add(user)
         db_session.commit()
@@ -232,7 +236,8 @@ def setup():
 
         ##################################################
         # TODO Uncomment following line when in production
-        file.updateConfig("DEBUG = True", "DEBUG = False")
+        # TODO Changethe following line to remove the debug reference
+        # file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return redirect(url_for('library.index'))
 

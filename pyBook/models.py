@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, SmallInteger, Float
 from pyBook.database import Base
+import pyBook.utils.secrets as secrets
 import json
 import math
 
@@ -15,8 +16,9 @@ class User(Base):
     pw_salt = Column(String(64))
     pw_hash = Column(String(64))
     api_key = Column(String(15), unique=True)
+    language = Column(String(3))
 
-    def __init__(self, user_name=None, email=None, admin=0, first_name=None, last_name=None,
+    def __init__(self, user_name=None, email=None, admin=0, first_name=None, last_name=None, lang=None,
                  pw_salt=None, pw_hash=None, key=None, user_id=None):
         self.user_id = user_id
         self.email = email
@@ -24,6 +26,7 @@ class User(Base):
         self.admin = admin
         self.first_name = first_name
         self.last_name = last_name
+        self.language = lang
         self.pw_salt = pw_salt
         self.pw_hash = pw_hash
         self.api_key = key
@@ -35,6 +38,10 @@ class User(Base):
 
     def __repr__(self):
         return '<User %r>' % self.user_name
+
+    @property
+    def id(self):
+        return self.user_id
 
     @property
     def user(self):
@@ -62,6 +69,34 @@ class User(Base):
     @property
     def get_id(self):
         return self.user_id
+
+    @property
+    def lang(self):
+        return self.language
+
+    def set_lang(self, lang):
+        self.language = lang
+
+    @property
+    def get_email(self):
+        return self.email
+
+    def set_email(self, email):
+        self.email = email
+
+    @property
+    def get_first_name(self):
+        return self.first_name
+
+    @property
+    def get_last_name(self):
+        return self.last_name
+
+    def set_first_name(self, fname):
+        self.first_name = fname
+
+    def set_last_name(self, lname):
+        self.last_name = lname
 
 
 class Book(Base):

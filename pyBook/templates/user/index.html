@@ -7,12 +7,26 @@
                 {% include "library/filter.html" %}
             {% endfor %}
         </div>
-        <div id="container">
-            <div id="cards">
-                {% for book in Books %}
-                    {% include "library/book.html" %}
-                {% endfor %}
-            </div>
-        </div>
+        <form action="/update" method="post">
+            <label for="fname">{{ lang.name }}: </label>
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <input type="text" name="fname" placeholder="{{ lang.given_name }}" value="{{ user.first_name }}">
+            <input type="text" name="lname" placeholder="{{ lang.surname }}" value="{{ user.last_name }}"><br>
+            <label for="email">{{ lang.email }}: </label>
+            <input type="text" name="email" placeholder="{{ lang.email }}" value="{{ user.email }}"><br>
+{#            <label for="uname">{{ lang.user }}: </label>#}
+{#            <input type="text" name="uname" placeholder="{{ lang.user }}"><br>#}
+{#            <label for="pword">{{ lang.password }}: </label>#}
+{#            <input type="password" name="pword" placeholder="{{ lang.password }}"><br>#}
+            <label for="language">{{ lang.language }}: </label>
+            <select name="language">
+                <option value="eng">{{ lang.eng }}</option>
+                <option value="jpn">{{ lang.jpn }}</option>
+                <option value="spn">{{ lang.spn }}</option>
+                <option value="ger">{{ lang.ger }}</option>
+                <option value="fre">{{ lang.fre }}</option>
+            </select><br>
+            <button type="submit">{{ lang.save }}</button>
+        </form>
     </div>
 {% endblock %}

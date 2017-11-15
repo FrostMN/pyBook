@@ -9,7 +9,7 @@
                         <form id="edit-form{{ book.isbn10 }}" action="{{ url_for('library.save') }}">
                             <label for="title">Title:</label>
                                 <input name="title" placeholder="Title" type="text" value="{{ book.title }}"><br>
-                            <label for="author_fname">Author:</label>
+                            <label for="author_fname">{{ lang.eng.hello }}test - Author:</label>
                                 <input name="author_fname" placeholder="First" type="text" value="{{ book.author_fname }}">
                                 <input name="author_lname" placeholder="Last" type="text" value="{{ book.author_lname }}"><br>
                             <label for="isbn10">ISBN 10:</label>
