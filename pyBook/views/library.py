@@ -43,6 +43,11 @@ def index():
     return render_template('library/index.html', key=key, Books=books, user_count=len(users), users=users_json, lang=local[lang])
 
 
+@mod.route('/version')
+def version():
+    return "{ \"service\": \"pyBook\", \"version\": \"0.1\" }"
+
+
 @mod.route('/404')
 def not_found():
     return abort(404)

@@ -18,7 +18,8 @@ def hash_password(password, salt):
 
 # compares stored hash with newly generated hash
 def check_hash(user, password):
-    usr = db_session.query(pyBook.models.User).filter_by(user_name=user).first()
+    # usr = db_session.query(pyBook.models.User).filter_by(user_name=user).first()
+    usr = get_user(user)
     salt = usr.salt
     if hash_password(password, salt) == usr.hash:
         return True
@@ -26,6 +27,7 @@ def check_hash(user, password):
         return False
 
 
+# tests if user is in the database
 def user_exists(uname):
     count = pyBook.models.User.query.filter_by(user_name=uname).count()
     if count == 1:
@@ -34,6 +36,7 @@ def user_exists(uname):
         return False
 
 
+# gets user object
 def get_user(uname):
     return pyBook.models.User.query.filter_by(user_name=uname).first()
 

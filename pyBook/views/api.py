@@ -16,6 +16,23 @@ mod = Blueprint('api', __name__)
 # TODO finish fleshing out api
 
 
+@mod.route('/api/v1/login', methods=['GET', 'POST'])
+def api_login():
+    if request.method == 'POST':
+        json_data = dict(request.get_json(force=True))
+
+        # if 'user' in request.args.keys() and 'password' in request.args.keys():
+        if 'user' in json_data.keys() and 'password' in json_data.keys():
+            username = json_data.get("user")
+            password = json_data.get("password")
+            login_json = api.apiLogin(username, password)
+            return login_json
+        else:
+            return "{ \"error\": true, \"message\": \"missing parameter\" }"
+    else:
+        return "{ \"error\": true, \"message\": \"method not allowed\" }"
+
+
 @mod.route('/api/get/<key>/<isbn>')
 def api_get(key, isbn):
     if api.keyExists(key):

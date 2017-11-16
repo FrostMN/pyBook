@@ -1,6 +1,7 @@
 from pyBook import app
 import requests, json
 from pyBook.models import Book, User
+import pyBook.utils.secrets as secrets
 
 # get api info from config file
 key = app.config['ISBNDB_API_KEY']
@@ -81,3 +82,16 @@ def getBookCount(isbn):
     else:
         return Book.query.filter_by(isbn_thirteen=isbn).count()
 
+
+def apiLogin(user_name, password):
+    if secrets.user_exists(user_name):
+        if secrets.check_hash(user_name, password):
+            usr = secrets.get_user(user_name)
+
+            return "{\"error\": false, \"username\": \"" + \
+                   usr.user_name + "\", \"admin\": \"" + str(usr.is_admin).lower() + \
+                   "\", \"UserID\": " + str(usr.get_id) + "  }"
+        else:
+            return "{\"error\": true, \"message\": \"bad username or password\"}"
+    else:
+        return "{\"error\": true, \"message\": \"bad username or password\"}"
