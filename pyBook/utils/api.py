@@ -2,6 +2,8 @@ from pyBook import app
 import requests, json
 from pyBook.models import Book, User
 import pyBook.utils.secrets as secrets
+from pyBook.database import db_session
+
 
 # get api info from config file
 key = app.config['ISBNDB_API_KEY']
@@ -74,6 +76,23 @@ def bookIdExists(book_id):
         return False
 
 
+def bookIsbnExists(isbn):
+    if len(isbn) == 10:
+        count = Book.query.filter_by(isbn_ten=isbn).count()
+        if count > 0:
+            return True
+        else:
+            return False
+    elif len(isbn) == 13:
+        count = Book.query.filter_by(isbn_thirteen=isbn).count()
+        if count > 0:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
 def getBookCount(isbn):
     if len(isbn) == 10:
         print("in get book count 10")
@@ -88,10 +107,18 @@ def apiLogin(user_name, password):
         if secrets.check_hash(user_name, password):
             usr = secrets.get_user(user_name)
 
-            return "{\"error\": false, \"username\": \"" + \
+            return "{ \"error\": false, \"username\": \"" + \
                    usr.user_name + "\", \"admin\": \"" + str(usr.is_admin).lower() + \
-                   "\", \"UserID\": " + str(usr.get_id) + "  }"
+                   "\", \"UserID\": " + str(usr.get_id) + ", \"ApiKey\": \"" + str(usr.get_key) + "\"  }"
         else:
             return "{\"error\": true, \"message\": \"bad username or password\"}"
     else:
         return "{\"error\": true, \"message\": \"bad username or password\"}"
+
+
+def getUserByKey(key):
+    return db_session.query(User).filter_by(api_key=key).first()
+
+
+def getUserByID(UserID):
+    return db_session.query(User).filter_by(user_id=UserID).first()

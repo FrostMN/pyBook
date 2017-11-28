@@ -19,12 +19,31 @@ mod = Blueprint('api', __name__)
 @mod.route('/api/v1/login', methods=['GET', 'POST'])
 def api_login():
     if request.method == 'POST':
-        json_data = dict(request.get_json(force=True))
+        print("in api_login() if request post")
+        request_data = request.get_data()
+        request_json = request.get_json()
 
-        # if 'user' in request.args.keys() and 'password' in request.args.keys():
-        if 'user' in json_data.keys() and 'password' in json_data.keys():
-            username = json_data.get("user")
-            password = json_data.get("password")
+        print(str(request_data)[2:-1])
+
+        print(json.loads(str(request_data)[2:-1]))
+
+        req_json = json.loads(str(request_data)[2:-1])
+
+        print(request_json)
+        print("req_json")
+        print(type(req_json))
+
+        req_dict = dict(req_json)
+
+        print(req_dict)
+        print(req_dict.get("user"))
+
+        # print(json.loads(request_data[2:-1]))
+
+        if 'user' in req_dict.keys() and 'password' in req_dict.keys():
+        # if 'user' in json_data.keys() and 'password' in json_data.keys():
+            username = req_dict.get("user")
+            password = req_dict.get("password")
             login_json = api.apiLogin(username, password)
             return login_json
         else:
@@ -79,7 +98,7 @@ def get_books(key):
 # TODO Need to flash out create method
 @mod.route('/api/v1/<key>/books/', methods=['POST'])
 def post_books(key, book=None):
-    api_user = db_session.query(pyBook.models.User).filter_by(api_key=key).first()
+    api_user = api.getUserByKey(key)
     admin = api_user.is_admin
     if book is not None:
         if admin:
@@ -100,7 +119,7 @@ def put_books(key):
 # Method to delete all books from db
 @mod.route('/api/v1/<key>/books/', methods=['DELETE'])
 def delete_books(key):
-    api_user = db_session.query(pyBook.models.User).filter_by(api_key=key).first()
+    api_user = api.getUserByKey(key)
     if api_user.is_admin:
         Book.query.delete()
         db_session.commit()
@@ -114,15 +133,9 @@ def delete_books(key):
 def get_book(key, isbn):
     if api.keyExists(key):
         if api.getBookCount(isbn) == 0:
-            return abort(404)
-        elif api.getBookCount(isbn) == 1:
-            if len(isbn) == 10:
-                bk = db_session.query(pyBook.models.Book).filter_by(isbn_ten=isbn).first()
-            else:
-                bk = db_session.query(pyBook.models.Book).filter_by(isbn_thirteen=isbn).first()
-            return json.dumps(bk.json()), status.HTTP_200_OK
+            return abort(status.HTTP_404_NOT_FOUND)
         else:
-            books_json = "{  "
+            books_json = "[  "
             if len(isbn) == 10:
                 bk = db_session.query(pyBook.models.Book).filter_by(isbn_ten=isbn).all()
                 for b in bk:
@@ -131,10 +144,25 @@ def get_book(key, isbn):
                 bk = db_session.query(pyBook.models.Book).filter_by(isbn_thirteen=isbn).all()
                 for b in bk:
                     books_json += str(b.json()) + ", "
-            books_json = books_json[0: -2] + " }"
-            return json.dumps(books_json), status.HTTP_200_OK
+            books_json = books_json[0: -2] + " ]"
+
+            print(type(books_json))
+            print(books_json.replace("'", "\""))
+            return books_json.replace("'", '"'), status.HTTP_200_OK
     else:
         return abort(401)
+
+
+# Gets if ISBN exists in DB
+@mod.route('/api/v1/<key>/exists/<isbn>', methods=['GET'])
+def isbn_exists(key, isbn):
+    if api.keyExists(key):
+        if api.bookIsbnExists(isbn):
+            return "{ \"isbnExists\": true }"
+        else:
+            return "{ \"isbnExists\": false }"
+    else:
+        return "bad key"
 
 
 # Workaround to make a web-form PUT, also cannot POST aspecific ISBN
@@ -166,24 +194,63 @@ def put_book(key, id=None, user_name=None):
             user_id = str(user_name).split(";")[0]
             user_first_name = str(user_name).split(";")[1]
             user_last_name = str(user_name).split(";")[2]
-            # print(bk)
-            # print(key)
-            # print(id)
-            # print(user_id)
-            # print(user_first_name)
-            # print(user_last_name)
             bk.lend_to(user_id, user_first_name + " " + user_last_name)
             db_session.commit()
             return redirect(url_for("library.index"))
     else:
-        return abort(status.HTTP_400_BAD_REQUEST)
+        if request.method == 'PUT':
+            print("put")
+            if api.keyExists(key):
+                print("good key")
+                api_user = api.getUserByKey(key)
+
+                if api_user.is_admin:
+
+                    print(request.get_data())
+                    req_dict = dict(json.loads(str(request.get_data())[2:-1]))
+
+                    print(req_dict["action"])
+
+                    if req_dict["action"] == "lend":
+                        print("do lend")
+
+                        user_id = req_dict["userID"]
+                        usr = api.getUserByID(user_id)
+                        user_first_name = usr.get_first_name
+                        user_last_name = usr.get_last_name
+                        user_full_name = user_first_name + " " + user_last_name
+
+                        book_id = req_dict["bookID"]
+                        bk = Book.query.get(book_id)
+
+                        bk.lend_to(user_id, user_full_name)
+                        db_session.commit()
+
+                        return str(status.HTTP_202_ACCEPTED), status.HTTP_202_ACCEPTED
+                    elif req_dict["action"] == "return":
+                        print("do return")
+
+                        book_id = req_dict["bookID"]
+                        bk = Book.query.get(book_id)
+
+                        bk.return_book()
+                        db_session.commit()
+                        return str(status.HTTP_202_ACCEPTED), status.HTTP_202_ACCEPTED
+                    else:
+                        return str(status.HTTP_400_BAD_REQUEST), status.HTTP_400_BAD_REQUEST
+                else:
+                    return "unauthorized"
+            else:
+                return "bad key"
+        else:
+            return abort(status.HTTP_400_BAD_REQUEST)
 
 
 # Method to delete a book from the db
 @mod.route('/api/v1/<key>/books/<id>', methods=['DELETE'])
 def delete_book(key, id):
     if api.keyExists(key):
-        api_user = db_session.query(pyBook.models.User).filter_by(api_key=key).first()
+        api_user = api.getUserByKey(key)
         if api_user.is_admin:
             Book.query.get(id)
             db_session.commit()
@@ -192,3 +259,74 @@ def delete_book(key, id):
             return abort(401) # status.HTTP_401_UNAUTHORIZED
     else:
         return abort(401) # status.HTTP_401_UNAUTHORIZED
+
+
+# add book to db
+@mod.route('/api/v1/<key>/add', methods=['GET', 'POST'])
+def add(key):
+    if request.method == 'POST':
+        # get data from POST and parse to useable format
+        request_data = request.get_data()
+        req_json = json.loads(str(request_data)[2:-1])
+        req_dict = dict(req_json)
+
+        if api.keyExists(key):
+            print("Api Key Exists")
+
+            api_user = api.getUserByKey(key)
+
+            if api_user.is_admin:
+                print("user is admin")
+
+                title = req_dict['title']
+                print(title)
+                isbn10 = req_dict["isbn_ten"]
+                print(isbn10)
+                isbn13 = req_dict["isbn_thr"]
+                print(isbn13)
+                author_first_name = req_dict["author_fname"]
+                print(author_first_name)
+                author_last_name = req_dict["author_lname"]
+                print(author_last_name)
+                synopsis = ""
+                stars = 0
+                sort = req_dict['title']
+                image_name = 'default.jpg'
+
+                print(title)
+                print(isbn10)
+                print(isbn13)
+                print(author_first_name)
+                print(author_last_name)
+
+                book = Book(title, isbn10, isbn13, author_first_name,
+                            author_last_name, stars, 0, synopsis, image_name, sort)
+
+                print(book)
+
+                db_session.add(book)
+                db_session.commit()
+                return "{ \"error\": \"false\" }"
+    else:
+        return "not post"
+
+
+# Gets book/books by isbn
+@mod.route('/api/v1/<key>/users', methods=['GET'])
+def get_users(key):
+    if api.keyExists(key):
+        user = api.getUserByKey(key)
+        if user.is_admin:
+            users_json = "[  "
+            users = db_session.query(pyBook.models.User).all()
+            for user in users:
+                users_json += str(user.api_json()) + ", "
+            users_json = users_json[0: -2] + " ]"
+
+            print(type(users_json))
+            print(users_json.replace("'", "\""))
+            return users_json.replace("'", '"'), status.HTTP_200_OK
+        else:
+            return abort(status.HTTP_401_UNAUTHORIZED)
+    else:
+        return abort(status.HTTP_401_UNAUTHORIZED)

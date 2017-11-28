@@ -218,7 +218,8 @@ def setup():
         if len(User.query.all()) > 0:
             return redirect(url_for('library.index'))
         else:
-            return render_template('library/setup.html')
+            lang = set_language()
+            return render_template('library/setup.html', lang=local[lang])
     else:
         first_name = request.form['fname']
         last_name = request.form['lname']

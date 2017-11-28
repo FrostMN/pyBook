@@ -213,15 +213,12 @@ lang["spn"] = spn
 lang["ger"] = ger
 lang["fre"] = fre
 
-# print(lang["eng"]["hello"])
-# print(lang["jpn"]["hello"])
-# print(lang["spn"]["hello"])
-# print(lang["ger"]["hello"])
-# print(lang["fre"]["hello"])
-
 
 def set_language():
-    if session.get('lang'):
-        return session['lang']
+    if 'lang' in session.keys():
+        if session.get('lang'):
+            return session['lang']
+        else:
+            return "eng"
     else:
         return "eng"

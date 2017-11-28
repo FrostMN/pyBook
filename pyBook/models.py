@@ -36,6 +36,10 @@ class User(Base):
                     name=self.first_name + " " + self.last_name,
                     salt=self.pw_salt, hash=self.pw_hash)
 
+    def api_json(self):
+        return dict(id=self.user_id, email=self.email, uname=self.user_name,
+                    name=self.first_name + " " + self.last_name)
+
     def __repr__(self):
         return '<User %r>' % self.user_name
 
