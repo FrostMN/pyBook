@@ -64,7 +64,7 @@ strange_syn = "Meursault learns of his mother's death. At her funeral, he expres
               "smokes and drinks coffee in front of the coffin. Rather than expressing his feelings, he " \
               "comments to the reader only about the attendees at the funeral."
 
-strange = Book('The Stranger', '0679420266', '9780679420262', 'Albert', 'Camus', 0, 0, strange_syn,
+strange = Book('The Stranger', '0394533054', '9780394533056', 'Albert', 'Camus', 0, 0, strange_syn,
                'stran0679420266.jpg', 'stranger')
 
 color_syn = "The story begins in Ankh-Morpork, the biggest city on the Discworld. The main character is an " \
