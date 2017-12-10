@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, abort
+from flask import Blueprint, render_template, redirect, url_for, request, session, abort, flash
 from pyBook.models import Book, User
 from pyBook.database import init_db, db_session
 from local import lang as local
@@ -15,7 +15,8 @@ mod = Blueprint('library', __name__)
 
 @mod.route('/')
 def index():
-    # print(os.path.join(pyBook.app.root_path, "pyBook.db"))
+    print(os.path.join(pyBook.app.root_path, "pyBook.db"))
+
     if file.exists(os.path.join(pyBook.app.root_path, "pyBook.db")):
         print('db exists')
     else:
@@ -37,6 +38,8 @@ def index():
         # print(u.get_id)
         users_json += '{ "id": "' + str(u.get_id) + '", "fname": "' + u.first_name + '", "lname": "' + u.last_name + '" }, '
     users_json = users_json[0:-2] + " ]"
+
+    # print(get_flashed_messages())
 
     # print(users_json)
     lang = set_language()
@@ -63,19 +66,21 @@ def log_in():
 
         # Tests if the username is in the db
         if not secrets.user_exists(uname):
-            # print("bad username")
+            flash('Invalid username or password')
             return redirect(url_for('library.index'))
         # Tests if the password mateches
         elif not secrets.check_hash(uname, pword):
-            # print("bad password")
+            flash('Invalid username or password')
             return redirect(url_for('library.index'))
         else:
+            print("logged in")
             session['logged_in'] = True
             usr = secrets.get_user(uname)
             session['user'] = usr.user
             session['admin'] = usr.is_admin
             session['key'] = usr.get_key
             session['lang'] = usr.lang
+            flash('You where successfully logged in')
             return redirect(url_for('library.index'))
     else:
         return redirect(url_for('library.index'))
@@ -87,6 +92,7 @@ def log_out():
     if session.get('logged_in'):
         if session['logged_in']:
             session.clear()
+            flash('You where successfully logged out')
             return redirect(url_for('library.index'))
     return redirect(url_for('library.index'))
 
@@ -238,7 +244,7 @@ def setup():
         db_session.commit()
 
         file.updateConfig("secret_key", secrets.generate_salt() + secrets.generate_salt())
-        file.updateConfig("isbndb_Key", isbn_db_key)
+        # file.updateConfig("isbndb_Key", isbn_db_key)
 
         ##################################################
         # TODO Uncomment following line when in production

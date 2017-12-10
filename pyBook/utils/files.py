@@ -44,6 +44,11 @@ def upload(file):
 def retrieve(url, file):
     file = file.lower()
     file = file.replace(" ", "")
+
+    print(url)
+    print(pyBook.app.config['COVER_UPLOAD_FOLDER'])
+    print( pyBook.app.config['COVER_UPLOAD_FOLDER'] + "/" + file)
+
     save_to = pyBook.app.config['COVER_UPLOAD_FOLDER'] + "/" + file
     if not exists(save_to):
         print("creating " + file)
@@ -52,6 +57,7 @@ def retrieve(url, file):
             with open(save_to, "wb") as f:
                 f.write(urllib.request.urlopen(url).read())
                 f.close()
+                return True
         else:
             return False
     else:

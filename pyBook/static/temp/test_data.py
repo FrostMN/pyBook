@@ -65,13 +65,13 @@ strange_syn = "Meursault learns of his mother's death. At her funeral, he expres
               "comments to the reader only about the attendees at the funeral."
 
 strange = Book('The Stranger', '0394533054', '9780394533056', 'Albert', 'Camus', 0, 0, strange_syn,
-               'stran0679420266.jpg', 'stranger')
+               'stran0394533054.jpg', 'stranger')
 
 color_syn = "The story begins in Ankh-Morpork, the biggest city on the Discworld. The main character is an " \
             "incompetent and cynical wizard named Rincewind, who is hired as a guide to the rich but naive " \
             "Twoflower, an insurance clerk from the Agatean Empire who has come to visit Ankh-Morpork. "
 
-color = Book('The Colour of Magic', '0062225677', '9780062225672', 'Terry', 'Pratechett', 0, 0, color_syn,
+color = Book('The Colour of Magic', '0062225677', '9780062225672', 'Terry', 'Pratechett', 4.0, 0, color_syn,
              'color0062225677.jpg', 'colour')
 
 system_syn = "Daniel Waterhouse returns to England from his \"Technologickal College\" project in Boston " \

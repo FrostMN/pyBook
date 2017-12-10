@@ -77,6 +77,7 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
     var modal = document.createElement("div");
     modal.setAttribute("id", "edit" + isbn_10);
     modal.setAttribute("class", "modal");
+    // modal.setAttribute("onclick", "closeModal(this)");
 
     var edit_modal = document.createElement("div");
     edit_modal.setAttribute("class", "edit-modal");
@@ -297,11 +298,10 @@ function editModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis, so
 }
 
 function logInModal() {
-
     var modal = document.createElement("div");
     modal.setAttribute("id", "login");
     modal.setAttribute("class", "modal");
-    modal.setAttribute("onclick", "closeModal('login')");
+    // modal.setAttribute("onclick", "closeModal(this)");
 
 
     var login_modal = document.createElement("div");
@@ -363,7 +363,7 @@ function lendBook(book_id, api_key, users_json) {
     var modal = document.createElement("div");
     modal.setAttribute("id", "lend-book-" + book_id);
     modal.setAttribute("class", "modal");
-    modal.setAttribute("onclick", "clodeModal(lend-book-" + book_id);
+    // modal.setAttribute("onclick", "closeModal(this)");
 
 
     var lend_modal = document.createElement("div");
@@ -408,10 +408,6 @@ function lendBook(book_id, api_key, users_json) {
 
 function returnBook(book_id, api_key, lendee) {
     alert("book_id: " + book_id + " api_key: " + api_key + " lendee: " + lendee);
-
-
-
-
 }
 
 function addBookModal(api_key) {
@@ -421,7 +417,7 @@ function addBookModal(api_key) {
     var modal = document.createElement("div");
     modal.setAttribute("id", "add-book");
     modal.setAttribute("class", "modal");
-    modal.setAttribute("onclick", "closeModal(add-book)");
+    // modal.setAttribute("onclick", "closeModal(this)");
 
 
 
@@ -471,7 +467,7 @@ function addBook(api_key, isbn) {
                     var auth_fname = book.author.split(" ")[0];
                     var auth_lname = book.author.split(" ")[1];
 
-                    closeModal('add-book');
+                    closeModal(document.getElementById('add-book'));
                     var mod = document.getElementById('add-book');
                     mod.outerHTML = "";
                     delete mod;
@@ -584,6 +580,8 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     var modal = document.createElement("div");
     modal.setAttribute("id", newBookID);
     modal.setAttribute("class", "modal");
+    // modal.setAttribute("onclick", "closeModal(this)");
+
 
     var edit_modal = document.createElement("div");
     edit_modal.setAttribute("class", "new-book-modal");
@@ -601,7 +599,7 @@ function newBookModal(title, fname, lname, isbn_10, isbn_13, book_img, synopsis,
     // create cancel link
     var cancel_modal = document.createElement("a");
     cancel_modal.setAttribute("class", "cancel-modal");
-    cancel_modal.setAttribute("onclick", "closeModal('" + newBookID + "')");
+    cancel_modal.setAttribute("onclick", "closeModal(this)");
     cancel_modal.setAttribute("href", "javascript:void(0);");
 
     // create cancel icon
@@ -864,7 +862,7 @@ function deleteModal(isbn_10, book_id, title, lang_confirm, lang_cancel, lang_de
 
     var cancel_button = document.createElement("button");
     cancel_button.setAttribute("type", "button");
-    cancel_button.setAttribute("onclick", "closeModal('delete" + isbn_10 + "')");
+    cancel_button.setAttribute("onclick", "closeModal(this)");
     cancel_button.innerHTML = lang_cancel;
 
     var delete_warning = document.createElement('h2');
@@ -907,17 +905,24 @@ function escapeQuotes(string) {
     escaped_string = escaped_string.replace('"', "&quot;");
     return escaped_string;
 }
-//
-// function closeModal() {
-//
-// }
 
 
 function closeModal(obj) {
-    var closeID = obj;
-    var modal = document.getElementById(closeID);
+    var element = obj;
+    while (element.className !== 'modal') {
+        element = element.parentNode
+    }
     document.getElementById("container").style.removeProperty("height");
     document.getElementById("container").style.removeProperty("overflow");
-    modal.style.display = "none";
+    element.style.display = "none";
 }
+
+function dismissFlash(obj) {
+    var element = obj;
+    while (element.className !== "flash-messages") {
+        element = element.parentNode
+    }
+    element.style.display = "none";
+}
+
 

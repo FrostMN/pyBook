@@ -4,6 +4,22 @@
     {% include "head.html" %}
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                <ul style="float: right">
+                    <li>
+                        <a href="javascript:void(0)" onclick="dismissFlash(this)">X</a>
+                    </li>
+                </ul>
+                <ul id="message-list" class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
     {% block body %}
     {% endblock %}
 </body>

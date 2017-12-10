@@ -228,6 +228,41 @@ html {
     background-color: #3e8e41;
 }
 
+
+/****************************************
+ *                                      *
+ *        CSS for flash messages        *
+ *                                      *
+ ****************************************/
+
+.flash-messages {
+
+    position: fixed;
+    top: 5em;
+    left: 15%;
+    right: 15%;
+    width: 70%;
+    background-color: yellow;
+    color: black;
+
+    padding: 1em;
+
+    border: solid black 2px;
+
+    z-index: 2000;
+}
+
+.flash-messages li {
+    display: inline-block;
+}
+
+.flash-messages a {
+    display: inline-block;
+    text-decoration: none;
+    float:right;
+    color: black;
+}
+
 /****************************************
  *                                      *
  *        CSS for filters follow        *

@@ -15,6 +15,8 @@
                     {% with api_key=key, users_json=users, lendee=lendee %}
                         {% include "library/book.html" %}
                     {% endwith %}
+                {% else %}
+                    <input type="hidden" value="no books in db">
                 {% endfor %}
             </div>
         </div>

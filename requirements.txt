@@ -5,3 +5,5 @@ requests
 werkzeug
 gunicorn
 Flask-API
+flask-socketio
+python-stdnum

@@ -6,6 +6,7 @@ from pyBook.database import db_session
 import pyBook
 import os
 import pyBook.utils.api as api
+import pyBook.utils.formatting as formatting
 import pyBook.utils.files as file
 import pyBook.utils.secrets as secrets
 
@@ -15,29 +16,29 @@ mod = Blueprint('api', __name__)
 
 # TODO finish fleshing out api
 
-
 @mod.route('/api/v1/login', methods=['GET', 'POST'])
 def api_login():
     if request.method == 'POST':
-        print("in api_login() if request post")
+        # print("in api_login() if request post")
         request_data = request.get_data()
-        request_json = request.get_json()
 
-        print(str(request_data)[2:-1])
-
-        print(json.loads(str(request_data)[2:-1]))
+        # TODO can prolly delete commented
+        # request_json = request.get_json()
+        # print(str(request_data)[2:-1])
+        # print(json.loads(str(request_data)[2:-1]))
 
         req_json = json.loads(str(request_data)[2:-1])
 
-        print(request_json)
-        print("req_json")
-        print(type(req_json))
+        # TODO can prolly delete commented
+        # print(request_json)
+        # print("req_json")
+        # print(type(req_json))
 
         req_dict = dict(req_json)
 
-        print(req_dict)
-        print(req_dict.get("user"))
-
+        # TODO can prolly delete commented
+        # print(req_dict)
+        # print(req_dict.get("user"))
         # print(json.loads(request_data[2:-1]))
 
         if 'user' in req_dict.keys() and 'password' in req_dict.keys():
@@ -65,6 +66,8 @@ def api_new(key, isbn):
     return api.getBook(isbn)
 
 
+# I dont think Im actualy using the
+# TODO remove if not needed
 @mod.route('/api/lend/<key>/isbn=<isbn>&to=<uname>', methods=['GET', 'POST'])
 def api_lend(key, isbn, uname):
     code = "500"
@@ -72,9 +75,9 @@ def api_lend(key, isbn, uname):
     api_user = db_session.query(pyBook.models.User).filter_by(api_key=key).first()
     lendee = db_session.query(pyBook.models.User).filter_by(user_name=uname).first()
     if api_user.is_admin:
-        print(isbn)
-        print(uname)
-        print(lendee.user)
+        # print(isbn)
+        # print(uname)
+        # print(lendee.user)
         user = str(api_user.user)
         if sucess:
             code = "200"
@@ -266,49 +269,49 @@ def delete_book(key, id):
 def add(key):
     if request.method == 'POST':
         # get data from POST and parse to useable format
-        request_data = request.get_data()
-        req_json = json.loads(str(request_data)[2:-1])
-        req_dict = dict(req_json)
+        req_dict = api.parseDataToDict(request)
 
         if api.keyExists(key):
-            print("Api Key Exists")
 
+            # finds registered user by api key
             api_user = api.getUserByKey(key)
 
             if api_user.is_admin:
                 print("user is admin")
+                # gets and formats title from req_dict
+                title = formatting.title(req_dict['title'])
 
-                title = req_dict['title']
-                print(title)
+                # gets isbn 10 from req_dict
                 isbn10 = req_dict["isbn_ten"]
-                print(isbn10)
-                isbn13 = req_dict["isbn_thr"]
-                print(isbn13)
-                author_first_name = req_dict["author_fname"]
-                print(author_first_name)
-                author_last_name = req_dict["author_lname"]
-                print(author_last_name)
-                synopsis = ""
-                stars = 0
-                sort = req_dict['title']
-                image_name = 'default.jpg'
 
-                print(title)
-                print(isbn10)
-                print(isbn13)
-                print(author_first_name)
-                print(author_last_name)
+                # gets isbn 13 from req_dict
+                isbn13 = req_dict["isbn_thr"]
+
+                # gets author first name from req_dict
+                author_first_name = req_dict["author_fname"]
+
+                # gets author last name from req_dict
+                author_last_name = req_dict["author_lname"]
+
+                synopsis = api.getSynopsisByISBN(isbn10)
+
+                stars = 0
+
+                book_cover = api.getBookCover(isbn10)
+                sort_title = formatting.sort_title(req_dict['title'])
 
                 book = Book(title, isbn10, isbn13, author_first_name,
-                            author_last_name, stars, 0, synopsis, image_name, sort)
+                            author_last_name, stars, 0, synopsis, book_cover, sort_title)
 
-                print(book)
+                # print(book)
 
                 db_session.add(book)
                 db_session.commit()
                 return "{ \"error\": \"false\" }"
+            else:
+                return "user not admin" # TODO make this a useful return for production
     else:
-        return "not post"
+        return "not post" # TODO make this a useful return for production
 
 
 # Gets book/books by isbn
