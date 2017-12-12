@@ -21,7 +21,7 @@ google_api_url = "https://www.googleapis.com/books/v1/volumes/"
 
 
 def getBook(ISBN):
-    print("in getBook()")
+
     synopsis = "Synopsis not found."
 
     open_library_call = open_library_uri.replace("{{isbn}}", ISBN)
@@ -35,12 +35,13 @@ def getBook(ISBN):
                 synopsis = google_api['volumeInfo']['description']
         book_title = format.title(open_library['title'])
         try:
-            if "," in str(open_library['data'][0]['author_data'][0]['name']):
-                author_fname = str(open_library['authors'][0]['name']).split(',')[1].strip()
-                author_lname = str(open_library['authors'][0]['name']).split(',')[0]
+            author_name = str(open_library['authors'][0]['name'])
+            if ',' in author_name:
+                author_fname = author_name.split(',')[1].strip()
+                author_lname = author_name.split(',')[0].strip()
             else:
-                author_fname = str(open_library['authors'][0]['name']).split(' ')[0]
-                author_lname = str(open_library['authors'][0]['name']).split(' ')[1]
+                author_fname = author_name.split(' ')[0]
+                author_lname = author_name.split(' ')[1]
         except:
             author_fname = str("")
             author_lname = str("")
