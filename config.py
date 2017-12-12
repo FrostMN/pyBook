@@ -4,7 +4,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
 
-SECRET_KEY = '5e5b8070b7a5ac87c5e161497925b6e3a987ff9954b936a1258673b04e54d87bffd217d9aadb46f1238177b630268499c3d5f31fd76f300ba69f082d24d411ac'
+SECRET_KEY = 'secret_key'
 DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'pyBook.db')
 DATABASE_CONNECT_OPTIONS = {}
 
