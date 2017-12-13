@@ -102,6 +102,12 @@ class User(Base):
     def set_last_name(self, lname):
         self.last_name = lname
 
+    def set_password_hash(self, hash):
+        self.pw_hash = hash
+
+    def set_password_salt(self, salt):
+        self.pw_salt = salt
+
 
 class Book(Base):
     __tablename__ = 'books'

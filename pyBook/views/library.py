@@ -232,7 +232,6 @@ def setup():
         email = request.form['email']
         user_name = request.form['uname']
         password = request.form['pword']
-        isbn_db_key = request.form['isbndb']
         language = request.form['language']
 
         salt = secrets.generate_salt()
@@ -244,11 +243,7 @@ def setup():
         db_session.commit()
 
         file.updateConfig("secret_key", secrets.generate_salt() + secrets.generate_salt())
-
-        ##################################################
-        # TODO Uncomment following line when in production
-        # TODO Changethe following line to remove the debug reference
-        # file.updateConfig("DEBUG = True", "DEBUG = False")
+        file.updateConfig("DEBUG = True", "DEBUG = False")
 
         return redirect(url_for('library.index'))
 

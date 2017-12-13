@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session
+from flask import Blueprint, render_template, redirect, url_for, request, session, flash
 from local import lang as local
 from local import set_language
 from pyBook.models import Book, User
@@ -54,9 +54,45 @@ def update():
 
             session['lang'] = language
 
+            flash('You successfully updated your account')
             return redirect(url_for('library.index'))
         else:
+            flash('Invalid Method')
             return redirect(url_for('library.index'))
     else:
+        flash('You need to be logged in to do that')
+        return redirect(url_for('library.index'))
+
+
+@mod.route('/updatepassword', methods=['GET', 'POST'])
+def update_password():
+    if 'user' in session.keys():
+        if request.method == 'POST':
+
+            # get user id from form
+            user_id = request.form['user_id']
+
+            # get user by user_id
+            edit_user = User.query.get(user_id)
+
+            # get user data from form
+            new_password = request.form['password']
+            new_salt = secrets.generate_salt()
+            new_hash = secrets.hash_password(new_password, new_salt)
+
+            # update user in db
+            edit_user.set_password_salt(new_salt)
+            edit_user.set_password_hash(new_hash)
+
+            # commit changes
+            db_session.commit()
+
+            flash('You successfully updated your password')
+            return redirect(url_for('library.index'))
+        else:
+            flash('Invalid Method')
+            return redirect(url_for('library.index'))
+    else:
+        flash('You need to be logged in to do that')
         return redirect(url_for('library.index'))
 

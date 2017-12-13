@@ -1,32 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
-    <div class="main">
+    <div class="main" style="margin-top: 6em; display: inline-block; text-align: center">
         {% include "header.html" %}
-        <div id="filters" class="filters">
-            {% for filter in Filters %}
-                {% include "library/filter.html" %}
-            {% endfor %}
+        <div style=" padding: 1em;">
+            <form action="/update" method="post">
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="text" name="fname" placeholder="{{ lang.given_name }}" value="{{ user.first_name }}"><br>
+                <input type="text" name="lname" placeholder="{{ lang.surname }}" value="{{ user.last_name }}"><br>
+                <input type="text" name="email" placeholder="{{ lang.email }}" value="{{ user.email }}"><br>
+                <button type="button" onclick="showModal('update-password')">{{ lang.update_password }}</button><br>
+                <select name="language">
+                    <option value="eng">{{ lang.eng }}</option>
+                    <option value="jpn">{{ lang.jpn }}</option>
+                    <option value="spn">{{ lang.spn }}</option>
+                    <option value="ger">{{ lang.ger }}</option>
+                    <option value="fre">{{ lang.fre }}</option>
+                </select>
+                <button type="submit">{{ lang.save }}</button>
+            </form>
         </div>
-        <form action="/update" method="post">
-            <label for="fname">{{ lang.name }}: </label>
-            <input type="hidden" name="user_id" value="{{ user.id }}">
-            <input type="text" name="fname" placeholder="{{ lang.given_name }}" value="{{ user.first_name }}">
-            <input type="text" name="lname" placeholder="{{ lang.surname }}" value="{{ user.last_name }}"><br>
-            <label for="email">{{ lang.email }}: </label>
-            <input type="text" name="email" placeholder="{{ lang.email }}" value="{{ user.email }}"><br>
-{#            <label for="uname">{{ lang.user }}: </label>#}
-{#            <input type="text" name="uname" placeholder="{{ lang.user }}"><br>#}
-{#            <label for="pword">{{ lang.password }}: </label>#}
-{#            <input type="password" name="pword" placeholder="{{ lang.password }}"><br>#}
-            <label for="language">{{ lang.language }}: </label>
-            <select name="language">
-                <option value="eng">{{ lang.eng }}</option>
-                <option value="jpn">{{ lang.jpn }}</option>
-                <option value="spn">{{ lang.spn }}</option>
-                <option value="ger">{{ lang.ger }}</option>
-                <option value="fre">{{ lang.fre }}</option>
-            </select><br>
-            <button type="submit">{{ lang.save }}</button>
-        </form>
+        {% with user=user %}
+            {% include "user/update_password_modal.html" %}
+        {% endwith %}
     </div>
 {% endblock %}

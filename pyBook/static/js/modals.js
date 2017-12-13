@@ -906,9 +906,16 @@ function escapeQuotes(string) {
     return escaped_string;
 }
 
+function showModal(id) {
+    var modal = document.getElementById(id);
+    modal.style.display = "block";
+}
+
+// starting to migrate to generic modal calls
 
 function closeModal(obj) {
     var element = obj;
+    console.log(element.className);
     while (element.className !== 'modal') {
         element = element.parentNode
     }
@@ -916,6 +923,17 @@ function closeModal(obj) {
     document.getElementById("container").style.removeProperty("overflow");
     element.style.display = "none";
 }
+
+function closeModalNew(obj) {
+    var element = obj;
+    console.log(element.className);
+    while (element.className !== 'modal') {
+        element = element.parentNode
+    }
+    element.style.display = "none";
+}
+
+// end migration section
 
 function dismissFlash(obj) {
     var element = obj;

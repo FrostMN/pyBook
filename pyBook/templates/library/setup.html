@@ -1,27 +1,24 @@
 {% extends "layout.html" %}
 {% include "header.html" %}
 {% block body %}
-    <div id="setup-page" class="main" style="margin-top: 6em">
-        <form action="/setup" method="post">
-            <label for="fname">Name: </label>
-            <input type="text" name="fname">
-            <input type="text" name="lname"><br>
-            <label for="email">Email: </label>
-            <input type="text" name="email"><br>
-            <label for="uname">User Name: </label>
-            <input type="text" name="uname"><br>
-            <label for="pword">Password: </label>
-            <input type="password" name="pword"><br>
-            <select name="language">
-                <option value="eng">English</option>
-                <option value="jpn">Japanese</option>
-                <option value="spn">Spanish</option>
-                <option value="ger">German</option>
-                <option value="fre">French</option>
-            </select>
-            <label for="pword">ISBN DB Key: </label>
-            <input type="password" name="isbndb"><br>
-            <button type="submit">Submit</button>
-        </form>
+    <div id="setup-page" class="main" style="margin-top: 6em; display: inline-block; text-align: center">
+        <div style=" padding: 1em;">
+            <form action="/setup" method="post">
+                <label>CREATE ADMIN USER</label><br><br>
+                <input type="text" name="fname" placeholder="First Name"><br>
+                <input type="text" name="lname" placeholder="Last Name"><br>
+                <input type="text" name="email" placeholder="Email"><br>
+                <input type="text" name="uname" placeholder="User Name"><br>
+                <input type="password" name="pword" placeholder="Password"><br>
+                <select name="language">
+                    <option value="eng">English</option>
+                    <option value="jpn">Japanese</option>
+                    <option value="spn">Spanish</option>
+                    <option value="ger">German</option>
+                    <option value="fre">French</option>
+                </select>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
 {% endblock %}
