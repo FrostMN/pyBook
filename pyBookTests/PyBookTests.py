@@ -60,15 +60,23 @@ class pyBookTestCase(unittest.TestCase):
         rv = self.app.get('/')
         assert b'no books in db' in rv.data
 
-    def test_login_logout(self):
+    def test_login(self):
+        rv = self.login('admin', 'default')
+        assert b'You where successfully logged in' in rv.data
+
+    def test_logout(self):
         rv = self.login('admin', 'default')
         assert b'You where successfully logged in' in rv.data
         rv = self.logout()
         assert b'You where successfully logged out' in rv.data
+
+    def test_bad_login(self):
         rv = self.login('adminx', 'default')
         assert b'Invalid username or password' in rv.data
         rv = self.login('admin', 'defaultx')
         assert b'Invalid username or password' in rv.data
+
+
 
     def test_add_book(self):
         print("in test add book")
