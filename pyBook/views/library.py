@@ -244,7 +244,6 @@ def setup():
         db_session.commit()
 
         file.updateConfig("secret_key", secrets.generate_salt() + secrets.generate_salt())
-        # file.updateConfig("isbndb_Key", isbn_db_key)
 
         ##################################################
         # TODO Uncomment following line when in production
@@ -260,15 +259,3 @@ def setup():
 def api_new(key, isbn):
     return api.getBook(isbn)
 
-#
-# @mod.route('/api/lend/<key>/isbn=<isbn>&to=<uname>', methods=['GET', 'POST'])
-# def api_lend(key, isbn, uname):
-#     api_user = db_session.query(pyBook.models.User).filter_by(api_key=key).first()
-#     lendee = db_session.query(pyBook.models.User).filter_by(user_name=uname).first()
-#     if api_user.is_admin:
-#         print(isbn)
-#         print(uname)
-#         print(lendee.user)
-#         user = str(api_user.user)
-#     return user
-#

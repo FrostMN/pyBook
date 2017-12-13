@@ -33,4 +33,3 @@ def sort_title(title_string):
         return str(title_string[2:]).lower()
     return str(title_string).lower()
 
-

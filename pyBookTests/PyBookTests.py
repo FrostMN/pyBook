@@ -48,10 +48,7 @@ class pyBookTestCase(unittest.TestCase):
         usr = secrets.get_user('admin')
         print("user key:")
         print(usr.get_key)
-
-
-
-        return self.app.get('/api/v1/'+ usr.get_key +'/books/0451524934', follow_redirects=True)
+        return self.app.get('/api/v1/'+ usr.get_key + '/books/0451524934', follow_redirects=True)
 
     def logout(self):
         return self.app.get('/log_out', follow_redirects=True)
@@ -76,17 +73,11 @@ class pyBookTestCase(unittest.TestCase):
         rv = self.login('admin', 'defaultx')
         assert b'Invalid username or password' in rv.data
 
-
-
     def test_add_book(self):
-        print("in test add book")
         rs = self.add_book()
         print(rs.data)
         rs = self.get_book()
         print(rs.data)
-
-
-
 
 if __name__ == '__main__':
     unittest.main()
