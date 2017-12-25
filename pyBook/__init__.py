@@ -28,4 +28,4 @@ from pyBook.database import db_session
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
