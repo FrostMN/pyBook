@@ -5,3 +5,4 @@ requests
 werkzeug
 Flask-API
 python-stdnum
+gunicorn
