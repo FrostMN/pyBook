@@ -55,6 +55,7 @@ def getBook(ISBN):
     else:
         return str(Book('not found', '', '', '', '', 0, 0, '', "default.jpg"))
 
+
 def lend():
     return None
 

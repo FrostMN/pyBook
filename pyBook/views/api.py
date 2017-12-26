@@ -19,30 +19,14 @@ mod = Blueprint('api', __name__)
 @mod.route('/api/v1/login', methods=['GET', 'POST'])
 def api_login():
     if request.method == 'POST':
-        # print("in api_login() if request post")
-        request_data = request.get_data()
 
-        # TODO can prolly delete commented
-        # request_json = request.get_json()
-        # print(str(request_data)[2:-1])
-        # print(json.loads(str(request_data)[2:-1]))
+        request_data = request.get_data()
 
         req_json = json.loads(str(request_data)[2:-1])
 
-        # TODO can prolly delete commented
-        # print(request_json)
-        # print("req_json")
-        # print(type(req_json))
-
         req_dict = dict(req_json)
 
-        # TODO can prolly delete commented
-        # print(req_dict)
-        # print(req_dict.get("user"))
-        # print(json.loads(request_data[2:-1]))
-
         if 'user' in req_dict.keys() and 'password' in req_dict.keys():
-        # if 'user' in json_data.keys() and 'password' in json_data.keys():
             username = req_dict.get("user")
             password = req_dict.get("password")
             login_json = api.apiLogin(username, password)
